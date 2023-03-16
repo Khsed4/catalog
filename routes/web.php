@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
-Route::get('/products',[App\Http\Controllers\ProductController::class,'addProducts']);
-Route::post('/products',[App\Http\Controllers\ProductController::class,'StoreProduct'])->name('product.store');
+Route::get('/',          [App\Http\Controllers\ProductController::class, 'products']);
+Route::get('/print',     [App\Http\Controllers\ProductController::class, 'print_products']);
+Route::get('/products',  [App\Http\Controllers\ProductController::class, 'addProducts']);
+Route::post('/products', [App\Http\Controllers\ProductController::class,'StoreProduct'])->name('product.store');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 ?>
