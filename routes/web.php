@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +17,17 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
 Auth::routes();
-Route::get('/',          [App\Http\Controllers\ProductController::class, 'products']);
-Route::get('/print',     [App\Http\Controllers\ProductController::class, 'print_products']);
-Route::get('/products',  [App\Http\Controllers\ProductController::class, 'addProducts']);
-Route::post('/products', [App\Http\Controllers\ProductController::class,'StoreProduct'])->name('product.store');
+Route::middleware('auth')->group(function(){
+    Route::get('/', [App\Http\Controllers\ProductController::class, 'products']);
+    Route::get('/dinner', [App\Http\Controllers\ProductController::class, 'head']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/print', [App\Http\Controllers\ProductController::class, 'print_products']);
+    Route::get('/products', [App\Http\Controllers\ProductController::class, 'addProducts']);
+    Route::post('/products', [App\Http\Controllers\ProductController::class, 'StoreProduct'])->name('product.store');
+
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+
+
 ?>

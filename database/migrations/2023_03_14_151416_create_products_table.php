@@ -18,11 +18,12 @@ class CreateProductsTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->double('price', 6, 2);
-            $table->enum('category', array('General Item', 'Cup & Glass',
-            'Dining Ware', 'cookware', 
-            'Flask(Tarmoz)', 'Kitchen Ware', 'House Ware', 
-            'Religious Product', 'Rug and mattres', 'Wearing', 
-            'Accessories', 'Nuts and Fruit Pots'));
+            $table->enum('category', array('Spice Set', 'Snack Dish',
+            'Dishes', 'Tea Glasses',
+            'Teapot', 'Cooker', 'Pressure Cooker',
+            'Table Cloth', 'Tea Glass', 'Cultery Set',
+            'Spoon Holder','Decorative','Nut Pot','Kitchenware','Cake Pot','Tray',
+            'Coffee Set','Square Plate','Kitchen Accessorie','Sport'));
             $table->longText('description');
             $table->string('SKU');
             $table->string('item_number', 100)->nullable();

@@ -1,24 +1,53 @@
-<div class="card">
-    <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
-        <img src="{{ public_path('images/' . $product->image) }}" class="w-100" />
-        <a href="#!">
-            <div class="mask">
-                <div class="d-flex justify-content-start align-items-end h-100">
-                    <h5>
-                        <span class="badge bg-primary ms-2">New</span>
-                    </h5>
-                </div>
-            </div>
-            <div class="hover-overlay">
-                <div class="mask" style="background-color: rgba(251,251,251,0.15);"></div>
-            </div>
-        </a>
-    </div>
-    <div class="card-body">
-        <a href="" class="text-reset">
-            <h5 class="card-title mb-3">{{ $product->name }}</h5>
-        </a>
-        <a href="" class="text-reset"><p>{{ $product->category }}</p></a>
-        <h6 class="mb-3">$61.99</h6>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            box-sizing: border-box;
+            min-height: 100vh;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+
+            background-color: white;
+            max-width: 1000px;
+            min-height: 100px;
+            align-self: center;
+        }
+
+        .myImages {
+            height: 600px;
+            width: 450px;
+            object-fit: cover;
+        }
+
+        .items {}
+    </style>
+</head>
+
+<body>
+    <section class="container">
+
+        <img src="{{ public_path('images/' . $product->image) }} " class="myImages" />
+        <h3>Rug Code :A01 </h3>
+        <h3>Available Sizes</h3>
+        <h4>
+            12 meters: 3m x 4m (9.8 ft x 13ft ft)
+            12 meters: 3m x 4m (9.8 ft x 13ft ft)
+            12 meters: 3m x 4m (9.8 ft x 13ft ft)
+        </h4>
+
+    </section>
+</body>
+
+</html>
