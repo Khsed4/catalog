@@ -50,7 +50,7 @@
         .price {
             color: grey;
             font-size: 22px;
-            visibility: hidden;
+
         }
 
 

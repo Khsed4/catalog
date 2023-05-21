@@ -96,7 +96,7 @@
 
         .price {
             display: block;
-            visibility: hidden;
+
             float: left;
             margin-left: 10px;
             -webkit-border-radius: 28;
