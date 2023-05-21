@@ -40,7 +40,9 @@ class productController extends Controller
 
 
 
-        $pdf = Pdf::loadView('products-print', compact('products'))->setPaper('A4', 'landscape')->save(public_path('pdfs/' . $name));
+        // $pdf = Pdf::loadView('products-print', compact('products'))->setPaper('A4', 'landscape')->save(public_path('pdfs/' . $name));
+        $pdf = Pdf::loadView('products-print', compact('products'))->setPaper('A4', 'landscape');
+
         return $pdf->stream($name);
     }
 
