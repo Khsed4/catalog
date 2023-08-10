@@ -5,39 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use DB;
-use Illuminate\Support\Facades\DB as FacadesDB;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class productController extends Controller
 {
+public function home(){
+    return view('layouts.app');
+}
 
-
-    public function head()
-    {
-        // $products = Product::orderBy('category', 'asc')->get();
-        $products = DB::table('products')->where('category', 'Rugs')->get();
-
-        return view('dinner', compact('products'));
-    }
     public function products()
     {
 
         // $products = Product::orderBy('category', 'asc')->where('category', '!=', 'Dinner Set')->get();
-        $products = Product::orderBy('category', 'asc')->get();
+        $products = Product::orderBy('temp', 'desc')->where('quantity', '>', '0')->get();
         // $products = DB::table('products')->where('category', 'Dinner Set')->get();
 
 
         return view('products-print', compact('products'));
     }
+    public function outOfStock()
+    {
 
+        // $products = Product::orderBy('category', 'asc')->where('category', '!=', 'Dinner Set')->get();
+        $products = Product::orderBy('category', 'desc')->where('quantity', '==', '0')->get();
+        // $products = DB::table('products')->where('category', 'Dinner Set')->get();
+
+
+        return view('outOfStock', compact('products'));
+    }
+    public function dinner()
+    {
+        $products = DB::table('products')->where('category', 'Dinner Set')->get();
+        return view('products-print', compact('products'));
+    }
     public function print_products()
     {
 
 
-        $products = Product::orderBy('category', 'asc')->get();
+        $products = Product::orderBy('category', 'asc')->where('quantity', '>', '0')->get();
 
         $name = 'invoice' . time() . '.pdf';
-
 
 
         // $pdf = Pdf::loadView('products-print', compact('products'))->setPaper('A4', 'landscape')->save(public_path('pdfs/' . $name));
@@ -79,5 +87,13 @@ class productController extends Controller
             $product->save();
             return back()->with('product_added', 'The product has been saved');
         }
+    }
+    public function adminProducts()
+    {
+        return view("admin.products");
+    }
+    public function adminCatalogues()
+    {
+        return view("admin.catalogues");
     }
 }

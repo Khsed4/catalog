@@ -47,7 +47,7 @@
             <select class="custom-select" name="category" required>
 
                 <option value="Spice Set">Spice Set</option>
-                <option value="Snack Dish" >Snack Dish</option>
+                <option value="Snack Dish"  >Snack Dish</option>
                 <option value="Dishes">Dishes </option>
                 <option value='Tea Glass'>Tea Glasses</option>
                 <option value="Teapot" >Teapot </option>
@@ -66,9 +66,12 @@
                 <option value="Square Plate">Square Plate</option>
                 <option value="Kitchen Accessorie">Kitchen Accessorie</option>
                 <option value="Nut Plate">Nut Plate</option>
-                <option value="Sport">Sport</option>
+                <option value="ZSport" selected='select'>ZSport</option>
                 <option value="Dinner Set" >Dinner Set</option>
-                <option value="Dinner Set" selected='select'>Rugs</option>
+                <option value="Rugs" >Rugs</option>
+                <option value="BBQ" >BBQ</option>
+                <option value="Spoon Set" >Spoon Set</option>
+
 
             </select>
             <div class="invalid-feedback">Example invalid custom select feedback</div>

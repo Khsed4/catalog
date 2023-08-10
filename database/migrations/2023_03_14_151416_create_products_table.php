@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->string('SKU');
             $table->string('item_number', 100)->nullable();
             $table->string('image');
+            $table->integer('quantity')->default(100);;
 
         });
     }

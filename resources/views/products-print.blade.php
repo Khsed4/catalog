@@ -9,11 +9,6 @@
 
 
     <style>
-        header .pagenum:before {
-            content: counter(page);
-
-        }
-
         header {
             position: fixed;
             top: 5px;
@@ -35,10 +30,11 @@
             max-width: 100%;
             height: 80vh;
             margin-top: 90px;
-            margin-left: 90px;
+            /* margin-left: 90px; */
             text-align: center;
             font-family: arial;
-            border: 3px solid white;
+            margin-right: 15px;
+            border: 3px solid rgb(12, 12, 12);
             position: relative;
         }
 
@@ -64,7 +60,7 @@
         .page {
             height: 100vh;
             width: 100%;
-            border: 3px solid grey;
+            margin-right: 10px;
 
 
         }
@@ -74,7 +70,9 @@
         }
 
         .name {
-
+            width: 82%;
+            position: absolute;
+            bottom: 100px;
             font-size: 3vh;
 
             -webkit-border-radius: 28;
@@ -88,15 +86,14 @@
             border: solid #ebe4e4 2px;
             text-decoration: none;
             font-weight: bolder;
-
-            padding: 5px 20px 5px 20px;
+            right: 50px;
+            left: 15px;
             border: solid #ebe4e4 2px;
             text-decoration: none;
         }
 
         .price {
             display: block;
-
             float: left;
             margin-left: 10px;
             -webkit-border-radius: 28;
@@ -105,13 +102,33 @@
             font-family: Arial;
             color: #ffffff;
             font-size: 20px;
-            background: red;
+            background: rgb(230, 83, 83);
             padding: 5px 20px 5px 20px;
             border: solid #ebe4e4 2px;
             text-decoration: none;
             position: absolute;
-            bottom: 1px;
-            right: 5px;
+            bottom: 3px;
+            right: 8px;
+
+
+
+        }
+        .quantity {
+margin-left: auto;
+width: 30%;
+
+            -webkit-border-radius: 28;
+            -moz-border-radius: 28;
+            border-radius: 28px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            background: rgb(243, 7, 7);
+            padding: 5px 20px 5px 20px;
+            border: solid #ebe4e4 2px;
+
+
+
 
 
         }
@@ -119,7 +136,7 @@
         .SKU {
             float: right;
             margin-right: 10px;
-            background: #3498db;
+            background: #60e00a !important;
             background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
             background-image: -moz-linear-gradient(top, #3498db, #2980b9);
             background-image: -ms-linear-gradient(top, #3498db, #2980b9);
@@ -134,13 +151,14 @@
             padding: 5px 20px 5px 20px;
             text-decoration: none;
             position: absolute;
-            bottom: 1px;
-            left: 5px;
+            bottom: 3px;
+            left: 8px;
 
 
         }
 
         .item-number {
+            visibility: hidden;
             -webkit-border-radius: 28;
             -moz-border-radius: 28;
             border-radius: 28px;
@@ -172,33 +190,46 @@
             @for ($i = 0; $i < count($products); $i += 2)
                 <tbody>
 
+
                     <tr>
+
                         <td>
                             <div class="card">
                                 <img class="image"
                                     src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/' . $products[$i]->image))) }}">
-
+                                    {{-- <p class="quantity"> Out Of stock  </p> --}}
                                 <P class="name">{{ $products[$i]->name }}</P>
                                 <p class="item-number"> Item Number: : {{ $products[$i]->item_number }}</p>
-                                <p class="price"> Price : {{ $products[$i]->price }} $</p>
+
+                                    <p class="price">Price : {{ $products[$i ]->price }} $</p>
+
+
+
                                 <p class="SKU"> SKU : {{ $products[$i]->SKU }} </p>
 
                             </div>
                         </td>
 
 
-                        <td>
-                            <div class="card second">
-                                <img class="image"
-                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/' . $products[$i + 1]->image))) }}"
-                                    alt="Denim Jeans">
-                                    <P class="name">{{ $products[$i+1]->name }}</P>
-                                <p class="item-number"> Item Number: : {{ $products[$i + 1]->item_number }}</p>
-                                <p class="price">Price : {{ $products[$i + 1]->price }} $</p>
-                                <p class="SKU">SKU: {{ $products[$i + 1]->SKU }}</p>
+                            <td>
 
-                            </div>
-                        </td>
+                                <div class="card second">
+                                    <img class="image"
+                                        src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/' . $products[$i + 1]->image))) }}"
+                                        alt="Denim Jeans">
+                                    <P class="name">{{ $products[$i + 1]->name }}</P>
+                                    <p class="item-number"> Item Number: : {{ $products[$i + 1]->item_number }}</p>
+
+                                    <p class="price">Price : {{ $products[$i + 1]->price }} $</p>
+
+
+
+                                    <p class="SKU">SKU: {{ $products[$i + 1]->SKU }}</p>
+
+                                </div>
+                            </td>
+
+
                     </tr>
 
                 </tbody>
