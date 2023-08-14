@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoryModelsTable extends Migration
+class CreateCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateCategoryModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_models', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('description');
             $table->timestamps();
         });
     }

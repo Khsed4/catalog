@@ -17,18 +17,18 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->unsignedBigInteger('category_id')->unsigned();
+            $table->unsignedBigInteger('cataloge_id')->unsigned();
             $table->double('price', 6, 2);
-            $table->enum('category', array('Spice Set', 'Snack Dish',
-            'Dishes', 'Tea Glasses',
-            'Teapot', 'Cooker', 'Pressure Cooker',
-            'Table Cloth', 'Tea Glass', 'Cultery Set',
-            'Spoon Holder','Decorative','Nut Pot','Kitchenware','Cake Pot','Tray',
-            'Coffee Set','Square Plate','Kitchen Accessorie','Sport'));
             $table->longText('description');
             $table->string('SKU');
             $table->string('item_number', 100)->nullable();
             $table->string('image');
-            $table->integer('quantity')->default(100);;
+            $table->integer('out_of_stock')->default(0);
+            $table->foreign('category_id')->references('id')->on('Category')
+            ->onDelete('cascade');
+            $table->foreign('cataloge_id')->references('id')->on('Cataloge')
+            ->onDelete('cascade');
 
         });
     }

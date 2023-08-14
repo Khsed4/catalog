@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCataloguesTable extends Migration
+class CreateCatalogeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCataloguesTable extends Migration
      */
     public function up()
     {
-        Schema::create('catalogues', function (Blueprint $table) {
+        Schema::create('cataloge', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->longText('description');
@@ -28,6 +28,6 @@ class CreateCataloguesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('catalogues');
+        Schema::dropIfExists('cataloge');
     }
 }

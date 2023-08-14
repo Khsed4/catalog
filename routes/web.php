@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CatalogeController;
+use App\Http\Controllers\productController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,20 +17,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 Auth::routes();
-Route::get('/', [App\Http\Controllers\ProductController::class, 'products']);
-Route::get('/out', [App\Http\Controllers\ProductController::class, 'outOfStock']);
+
+
 Route::middleware('auth')->group(function(){
-    Route::get('/admin_prodcuts', [App\Http\Controllers\ProductController::class, 'adminProducts'])->name('product.admin');
-    Route::get('/admin_catalogues', [App\Http\Controllers\ProductController::class, 'adminCatalogues'])->name('catalogues.admin');
+    Route::get('/admin_prodcuts', [ProductController::class, 'adminProducts'])->name('product.admin');
+    Route::get('/admin_catalogues', [ProductController::class, 'adminCatalogues'])->name('catalogues.admin');
 });
 
-Route::get('/dinner', [App\Http\Controllers\ProductController::class, 'dinner']);
-Route::get('/print', [App\Http\Controllers\ProductController::class, 'print_products']);
-Route::get('/products', [App\Http\Controllers\ProductController::class, 'addProducts']);
-Route::post('/products', [App\Http\Controllers\ProductController::class, 'StoreProduct'])->name('product.store');
-Route::get('/home', [App\Http\Controllers\ProductController::class, 'home']);
+//Product Routes
+Route::get('/products', [ProductController::class, 'products']);
+Route::post('/store-product', [ProductController::class, 'storeProducts']);
+Route::get('/delete-prodcut/{id}',[productController::class,'deleteProduct']);
+Route::post('/remove-product', [productController::class, 'removeProduct']);
+Route::get('/edit-product/{id}', [productController::class, 'editproduct']);
+Route::put('/update-product', [productController::class, 'updateProduct']);
+Route::get('/search-prodcut', [productController::class, 'searchProduct']);
+Route::get('/export-product', [productController::class, 'exportProduct']);
+
+// Cataloge Routes
+Route::post('/add_cataloge', [CatalogeController::class, 'StoreCataloge'])->name('cataloge.store');
+Route::get('/edit-cataloge/{id}', [CatalogeController::class, 'editCatalog'])->name('editCataloge');
+
+Route::put('/update-cataloge', [CatalogeController::class, 'update']);
+Route::get('/delete-cataloge/{id}', [CatalogeController::class, 'deleteCatalog']);
+Route::get('/cataloges', [CatalogeController::class, 'showCataloges']);
+Route::post('/removedata', [CatalogeController::class, 'remove']);
+// End of Cataloge Routes
+
+// Route of Categories
+Route::get('/categories', [CategoryController::class, 'showCategories']);
+Route::post('/store-category', [CategoryController::class, 'storeCategory']);
+Route::get('/delete-category/{id}',[CategoryController::class,'deleteCategory']);
+Route::post('/remove-category', [CategoryController::class, 'removeCategory']);
+Route::get('/edit-category/{id}', [CategoryController::class, 'editCategory']);
+Route::put('/update-category', [CategoryController::class, 'update']);
+// End of Category Routes
+Route::get('/', [productController::class, 'home']);
+// Route::post('/products', [ProductController::class, 'StoreProduct'])->name('product.store');
+
 ?>

@@ -1,31 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            {{ Session::get('success') }}
-        </div>
-    @endif
-    @if (Session::has('failed'))
-    <div class="alert alert-danger" role="alert">
-        {{ Session::get('failed') }}
-    </div>
+@if (Session::has('success'))
+<div class="alert alert-success" role="alert">
+    {{ Session::get('success') }}
+</div>
+@endif
+@if (Session::has('failed'))
+<div class="alert alert-danger" role="alert">
+{{ Session::get('failed') }}
+</div>
 @endif
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6 position-relative">
-                        <div class = "position-absolute top-0 start-0">
-                        <a href="#addEmployeeModal" class="btn btn-success " data-toggle="modal"><i
-                            class="material-icons">&#xE147;</i> <span>Products</span></a>
+                        <div class="position-absolute top-0 start-0">
+                            <a href="#addEmployeeModal" class="btn btn-success " data-toggle="modal"><i
+                                    class="material-icons">&#xE147;</i> <span>Products</span></a>
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Categories</span></a>
-                            </div>
+                                    class="material-icons">&#xE147;</i> <span>catalogue</span></a>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Catelog</span></a>
+                                class="material-icons">&#xE147;</i> <span>Add New Category</span></a>
 
                     </div>
                 </div>
@@ -43,18 +43,18 @@
                 </thead>
 
                 <tbody>
-                    @for ($i = 0; $i < count($cataloges); $i += 1)
+                    @for ($i = 0; $i < count($category); $i += 1)
                         <tr>
 
 
-                            <td>{{ $cataloges[$i]->name }}</td>
-                            <td>{{ $cataloges[$i]->description }}</td>
+                            <td>{{ $category[$i]->name }}</td>
+                            <td>{{ $category[$i]->description }}</td>
 
                             <td>
                                 <div class="btn-group">
-                                    <button value={{ $cataloges[$i]->id }}
+                                    <button value={{ $category[$i]->id }}
                                         class="btn btn-primary editButton btn-sm slide_start_button action_button_class ">Edit</button>
-                                    <button value={{ $cataloges[$i]->id }}
+                                    <button value={{ $category[$i]->id }}
                                         class="btn btn-danger deleteButton btn-sm slide_stop_button action_button_class ">Delete</button>
 
                                 </div>
@@ -83,10 +83,10 @@
     <div id="addEmployeeModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('cataloge.store') }}" method="POST">
+                <form action="{{ url('store-category') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h4 class="modal-title">Add A Cataloge</h4>
+                        <h4 class="modal-title">Add New Category</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -113,7 +113,7 @@
     <div id="editEmployeeModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('update-cataloge') }}" method="POST">
+                <form action="{{ url('update-category') }}" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="text" name="cat_id" id="cat_id">
@@ -145,7 +145,7 @@
 
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url('removedata') }}" method="POST">
+                <form action="{{ url('remove-category') }}" method="POST">
                     @csrf
 
                     <div class="modal-header">
@@ -153,7 +153,7 @@
                         <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="cataloge_id" id="cataloge_id">
+                        <input type="hidden" name="category_id" id="category_id">
                         <p>Are you sure you want to delete these Records?</p>
                         <p class="text-warning"><small>This action cannot be undone.</small></p>
                     </div>
@@ -176,14 +176,16 @@
 
                 var cat_id = $(this).val();
                 $('#editEmployeeModal').modal('show');
+                console.log('Here I am ');
                 $.ajax({
                     type: "GET",
-                    url: "/edit-cataloge/" + cat_id,
+                    url: "/edit-category/" + cat_id,
                     success: function(response) {
-                        console.log(response.catalog.name);
-                        $('#name').val(response.catalog.name);
-                        $('#cat_id').val(response.catalog.id);
-                        $('#description').val(response.catalog.description);
+
+                        console.log(response);
+                        $('#name').val(response.category.name);
+                        $('#cat_id').val(response.category.id);
+                        $('#description').val(response.category.description);
                     }
                 })
 
@@ -194,13 +196,13 @@
 
                 $('#deleteEmployeeModal').modal('show');
                 var cat_id = $(this).val();
-
+                console.log(cat_id);
                 $.ajax({
                     type: "GET",
-                    url: "/delete-cataloge/" + cat_id,
+                    url: "/delete-category/" + cat_id,
                     success: function(response) {
-                        console.log(cat_id +" inside JS");
-                        $("#cataloge_id").val(cat_id);
+                        console.log(cat_id + " inside JS");
+                        $("#category_id").val(cat_id);
 
                     }
                 })
