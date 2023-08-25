@@ -12,6 +12,7 @@ header {
 
 table {
     width: 100%;
+    table-layout: fixed;
 }
 
 .card {
@@ -141,4 +142,8 @@ body {
     border: solid #ebe4e4 2px;
     text-decoration: none;
     font-weight: bolder;
+}
+
+td {
+    width: 50%;
 }

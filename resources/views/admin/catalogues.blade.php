@@ -7,25 +7,25 @@
         </div>
     @endif
     @if (Session::has('failed'))
-    <div class="alert alert-danger" role="alert">
-        {{ Session::get('failed') }}
-    </div>
-@endif
+        <div class="alert alert-danger" role="alert">
+            {{ Session::get('failed') }}
+        </div>
+    @endif
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6 position-relative">
-                        <div class = "position-absolute top-0 start-0">
-                        <a href="#addEmployeeModal" class="btn btn-success " data-toggle="modal"><i
-                            class="material-icons">&#xE147;</i> <span>Products</span></a>
-                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Categories</span></a>
-                            </div>
+                        <div class="position-absolute top-0 start-0">
+                            <a href="{{ url('products') }}" class="btn btn-success "><i class="material-icons">&#xE147;</i>
+                                <span>Products</span></a>
+                            <a href="{{ url('categories') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
+                                <span>Sub-categories</span></a>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Catelog</span></a>
+                                class="material-icons">&#xE147;</i> <span>Add New Main-Category</span></a>
 
                     </div>
                 </div>
@@ -150,7 +150,8 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-bs-dismiss="modal"
+                            aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="cataloge_id" id="cataloge_id">
@@ -199,7 +200,7 @@
                     type: "GET",
                     url: "/delete-cataloge/" + cat_id,
                     success: function(response) {
-                        console.log(cat_id +" inside JS");
+                        console.log(cat_id + " inside JS");
                         $("#cataloge_id").val(cat_id);
 
                     }

@@ -17,7 +17,10 @@ class CreateCategoryTable extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description');
+            $table->unsignedBigInteger('cataloge_id')->unsigned();
             $table->timestamps();
+            $table->foreign('cataloge_id')->references('id')->on('Cataloge')
+                ->onDelete('cascade');
         });
     }
 

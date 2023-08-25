@@ -114,9 +114,10 @@ resources/views/products-print.blade.php
 
 
         }
+
         .quantity {
-margin-left: auto;
-width: 30%;
+            margin-left: auto;
+            width: 30%;
 
             -webkit-border-radius: 28;
             -moz-border-radius: 28;
@@ -198,11 +199,11 @@ width: 30%;
                             <div class="card">
                                 <img class="image"
                                     src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/' . $products[$i]->image))) }}">
-                                    {{-- <p class="quantity"> Out Of stock  </p> --}}
+                                {{-- <p class="quantity"> Out Of stock  </p> --}}
                                 <P class="name">{{ $products[$i]->name }}</P>
                                 <p class="item-number"> Item Number: : {{ $products[$i]->item_number }}</p>
 
-                                    <p class="price">Out Of Stock</p>
+                                <p class="price">Out Of Stock</p>
 
 
 
@@ -211,7 +212,7 @@ width: 30%;
                             </div>
                         </td>
 
-
+                        @isset($products[$i + 1])
                             <td>
 
                                 <div class="card second">
@@ -227,6 +228,8 @@ width: 30%;
 
                                 </div>
                             </td>
+                        @endisset
+
 
 
                     </tr>

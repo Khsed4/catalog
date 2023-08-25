@@ -19,6 +19,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <!-- Styles -->
@@ -47,19 +48,22 @@
             <div class="navbar-brand" href="#">
                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/1691844744.jpg'))) }}"
                     alt="apple" width="80">
-                Unique Natural LLC
+                Unique Natural LLC <a  href="{{url('products')}}">I'm admin</a>
             </div>
-
         </div>
         <div>
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">
-                Launch demo modal
-              </button>
-
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exportModal"
+                style="
+            width: 200px;
+            height: 60px;
+        ">
+                Export to PDF
+            </button>
 
 
         </div>
+
         </div>
     </nav>
     <!--Main Navigation-->

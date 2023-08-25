@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-@if (Session::has('success'))
-<div class="alert alert-success" role="alert">
-    {{ Session::get('success') }}
-</div>
-@endif
-@if (Session::has('failed'))
-<div class="alert alert-danger" role="alert">
-{{ Session::get('failed') }}
-</div>
-@endif
+    @if (Session::has('success'))
+        <div class="alert alert-success" role="alert">
+            {{ Session::get('success') }}
+        </div>
+    @endif
+    @if (Session::has('failed'))
+        <div class="alert alert-danger" role="alert">
+            {{ Session::get('failed') }}
+        </div>
+    @endif
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6 position-relative">
                         <div class="position-absolute top-0 start-0">
-                            <a href="#addEmployeeModal" class="btn btn-success " data-toggle="modal"><i
-                                    class="material-icons">&#xE147;</i> <span>Products</span></a>
-                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                    class="material-icons">&#xE147;</i> <span>catalogue</span></a>
+                            <a href="{{ url('products') }}" class="btn btn-success "><i class="material-icons">&#xE147;</i>
+                                <span>Products</span></a>
+                            <a href="{{ url('cataloges') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
+                                <span>Main-Categories</span></a>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -35,6 +35,7 @@
                     <tr>
 
                         <th>Name</th>
+                        <th>Main Category</th>
 
                         <th>Description</th>
 
@@ -48,6 +49,13 @@
 
 
                             <td>{{ $category[$i]->name }}</td>
+                            @foreach ($cateloges as $cateloge)
+                                @if ($cateloge->id == $category[$i]->cataloge_id)
+                                    <td>{{ $cateloge->name }}</td>
+                                @endif
+                            @endforeach
+
+
                             <td>{{ $category[$i]->description }}</td>
 
                             <td>
@@ -94,6 +102,18 @@
                             <label>Name</label>
                             <input name="name" type="text" class="form-control" required>
                         </div>
+                        <div class="form-group">
+
+
+                            <select class="form-select form-select-sm" name="cataloge_id" required>
+
+                                @for ($i = 0; $i < count($cateloges); $i++)
+                                    <option value="{{ $cateloges[$i]->id }}">{{ $cateloges[$i]->name }}</option>
+                                @endfor
+
+                            </select>
+                            <label> Cateloges </label>
+                        </div>
 
                         <div class="form-group">
                             <label>Description</label>
@@ -116,7 +136,7 @@
                 <form action="{{ url('update-category') }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="cat_id" id="cat_id">
+                    <input type="hidden" name="cat_id" id="cat_id">
                     <div class="modal-header">
                         <h4 class="modal-title" id="exampleModalLable">Edit Cataloge</h4>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
@@ -125,6 +145,19 @@
                         <div class="form-group">
                             <label> name</label>
                             <input name="name" id="name" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+
+
+                            <select class="form-select form-select-sm" name="cataloge_id" required>
+
+                                @for ($i = 0; $i < count($cateloges); $i++)
+                                    <option value="{{ $cateloges[$i]->id }}">{{ $cateloges[$i]->name }}</option>
+                                @endfor
+
+                            </select>
+                            <label> Main Category </label>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
@@ -150,7 +183,8 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-bs-dismiss="modal"
+                            aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="category_id" id="category_id">
@@ -185,6 +219,7 @@
                         console.log(response);
                         $('#name').val(response.category.name);
                         $('#cat_id').val(response.category.id);
+                        $('#cataloge_id').val(response.category.cataloge_id);
                         $('#description').val(response.category.description);
                     }
                 })

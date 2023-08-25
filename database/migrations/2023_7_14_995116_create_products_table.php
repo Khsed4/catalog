@@ -25,14 +25,13 @@ class CreateProductsTable extends Migration
             $table->string('item_number', 100)->nullable();
             $table->string('image');
             $table->integer('out_of_stock')->default(0);
+            $table->integer('quantity')->default(0);
             $table->foreign('category_id')->references('id')->on('Category')
-            ->onDelete('cascade');
+                ->onDelete('cascade');
             $table->foreign('cataloge_id')->references('id')->on('Cataloge')
-            ->onDelete('cascade');
-
+                ->onDelete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *

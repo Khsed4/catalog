@@ -173,7 +173,7 @@ body {
     box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
     font-weight: 700;
     border-radius: 50%;
-    padding: 2px 4px 3px!important;
+    padding: 2px 4px 3px !important;
     text-align: center;
     line-height: normal;
     width: 19px;
@@ -182,7 +182,7 @@ body {
 }
 
 .product-deatil hr {
-    padding: 0 0 5px!important
+    padding: 0 0 5px !important
 }
 
 .product-deatil .glyphicon {
@@ -217,7 +217,7 @@ body {
 }
 
 .product-deatil .fa-2x {
-    font-size: 16px!important
+    font-size: 16px !important
 }
 
 .product-deatil .fa-2x>h5 {
@@ -291,4 +291,22 @@ body {
     .prod-info-main .product-info {
         position: relative
     }
+}
+
+div#social-links {
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+div#social-links ul li {
+    display: inline-block;
+}
+
+div#social-links ul li a {
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin: 1px;
+    font-size: 30px;
+    color: #222;
+    background-color: #ccc;
 }

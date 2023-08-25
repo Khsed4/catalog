@@ -12,13 +12,15 @@ class CategoryController extends Controller
     public function showCategories()
     {
         $category = Category::all();
-        return view('admin.category', compact('category'));
+        $cateloges = Cataloge::all();
+        return view('admin.category', compact('category', 'cateloges'));
     }
     public function storeCategory(Request $request)
     {
         $category = new Category();
         $category->name = $request->name;
         $category->description = $request->description;
+        $category->cataloge_id = $request->cataloge_id;
         $category->save();
 
         return back()->with('catalog_added', 'The Category has been added');
@@ -52,9 +54,11 @@ class CategoryController extends Controller
         $cat_id = $request->input('cat_id');
         $category = Category::find($cat_id);
         $name = $request->name;
+        $cataloge_id = $request->cataloge_id;
         $description = $request->description;
         $category->name = $name;
         $category->description = $description;
+        $category->cataloge_id = $cataloge_id;
         $category->save();
         return back()->with('catalog_added', 'The Category has been Updated');
     }

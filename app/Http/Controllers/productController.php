@@ -8,6 +8,7 @@ use App\Models\cataloge;
 use App\Models\Category;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Jorenvh\Share\ShareFacade;
 
 
 
@@ -18,9 +19,12 @@ class productController extends Controller
 
     public function home()
     {
-        $products = DB::table('products')->get()->take(4);
+        $products = DB::table('products')->get();
         $categories = Category::get();
         $cataloges = Cataloge::get();
+
+
+
         return view('dashboard', compact('products', 'categories', 'cataloges'));
     }
     public function products()
@@ -28,6 +32,7 @@ class productController extends Controller
         $products = Product::orderBy('category_id', 'asc')->get();
         $categories = Category::get();
         $cataloges = Cataloge::get();
+
         return view('admin.products', compact('products', 'categories', 'cataloges'));
     }
 
@@ -52,11 +57,11 @@ class productController extends Controller
             $name = $request->name;
             $price = $request->price;
             $SKU = $request->SKU;
-            $Description = $request->description;
             $Item_Number = $request->Item_Number;
             $categroy_id = $request->category_id;
             $cataloge_id = $request->cataloge_id;
             $image = $request->file('mImage');
+            $Description = "No description is added for this product";
 
             $imageName = time() . '.' . $image->extension();
 
@@ -67,7 +72,7 @@ class productController extends Controller
             $product = new Product();
             $product->name = $name;
             $product->SKU = $SKU;
-            // $product->description = $Description;
+            $product->description = $Description;
             $product->item_number = $Item_Number;
             $product->category_id = $categroy_id;
             $product->cataloge_id = $cataloge_id;
@@ -131,20 +136,53 @@ class productController extends Controller
         $catalog = $request->input('catalog');
         $category = $request->input('category');
 
-        // $products = DB::table('products')->where('cataloge_id', $catalog)->where('category_id',$category)->get();
-        $products = Product::where('cataloge_id', $catalog)->where('category_id', $category)->get();
-        $categories = Category::get();
-        $cataloges = Cataloge::get();
+        if ($catalog == 'All' && $category != 'All')
+
+            $products = Product::where('category_id', $category)->get();
+
+
+        elseif ($catalog != 'All' && $category == 'All')
+            $products = Product::where('cataloge_id', $catalog)->get();
+
+
+        elseif ($catalog != 'All' && $category != 'All')
+            $products = Product::where('cataloge_id', $catalog)->where('category_id', $category)->get();
+
+
+
+
         return view('prdouct-table', compact('products'));
     }
     public function exportProduct(Request $request)
     {
         $cataloge_id = $request->cataloge_id;
         $category_id = $request->pr_category_id;
-        $products = Product::where('cataloge_id',  $cataloge_id)->where('category_id',  $category_id)->get();
-        $data['products'] = $products;
+        $print_type = $request->print_type;
+        $title = $request->cat_title;
 
-        $pdf = Pdf::loadView('print-product', $data)->setPaper('a4', 'landscape');
+        if ($cataloge_id == 'All' && $category_id != 'All')
+
+            $products = Product::where('category_id', $category_id)->get();
+
+
+        elseif ($cataloge_id != 'All' && $category_id == 'All')
+            $products = Product::where('cataloge_id', $category_id)->get();
+
+
+        elseif ($cataloge_id != 'All' && $category_id != 'All')
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->get();
+        $data['products'] = $products;
+        if ($print_type == '2') {
+            $pdf = Pdf::loadView('print.two-items', $data)->setPaper('a4', 'landscape');
+        } else
+            $pdf = Pdf::loadView('print.one-item', $data)->setPaper('a4', 'landscape');
+
         return $pdf->stream('invoice.pdf');
+    }
+    public function filterCategory(Request $request)
+    {
+        $id = $request->id;
+        $categories = Category::where('cataloge_id', $id)->get();
+        return view('filter-category', compact('categories'));
     }
 }
