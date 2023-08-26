@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/remove-product', [productController::class, 'removeProduct']);
     Route::get('/edit-product/{id}', [productController::class, 'editproduct']);
     Route::put('/update-product', [productController::class, 'updateProduct']);
+    Route::get('/toggle-product/{id}', [productController::class, 'toggleProduct']);
     // Cataloge Routes
     Route::post('/add_cataloge', [CatalogeController::class, 'StoreCataloge'])->name('cataloge.store');
     Route::get('/edit-cataloge/{id}', [CatalogeController::class, 'editCatalog'])->name('editCataloge');

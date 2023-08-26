@@ -33,19 +33,10 @@ class SocialShareButtonsController extends Controller
     {
         $category_id = $request->category;
         $cataloge_id = $request->catalog;
-        if ($cataloge_id == 'All' && $category_id != 'All')
-
-            $products = Product::where('category_id', $category_id)->get();
-
-
-        elseif ($cataloge_id != 'All' && $category_id == 'All')
-            $products = Product::where('cataloge_id', $category_id)->get();
-
-
-        elseif ($cataloge_id != 'All' && $category_id != 'All')
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->get();
-
-
+        if ($cataloge_id == 'All')
+            $products = Product::get()->where('out_of_stock', '!=', 0);
+        else
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->where('out_of_stock', '!=', 0)->get();
         return view('share-show', compact('products'));
     }
 }

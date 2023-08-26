@@ -16,27 +16,17 @@
                                 <label class="form-lable" for="name">Cataloge Title</label>
                             </div>
                             <div class="mb-3">
-                                <select class="form-select form-select-sm" name="cataloge_id" id="mcatalog">
-                                    <option selected>Main Category</option>
+                                <select class="form-select form-select-sm" name="cataloge_id" id="shareCateloge">
+                                    <option selected>All</option>
                                     @for ($i = 0; $i < count($cataloges); $i++)
                                         <option value="{{ $cataloges[$i]->id }}">{{ $cataloges[$i]->name }}</option>
                                     @endfor
                                 </select>
-                                <label> Cateloges </label>
+                                <label> Main Category </label>
                             </div>
                             <div class="mb-3">
+                                @include('filter-export-category')
 
-                                <select name="pr_category_id" class="form-select form-select-sm" id="mcategory" required>
-
-                                    <option selected>Sub Category</option>
-
-                                    @for ($i = 0; $i < count($categories); $i++)
-                                        <option value="{{ $categories[$i]->id }}">{{ $categories[$i]->name }}</option>
-                                    @endfor
-
-
-                                </select>
-                                <label class="form-lable"> Category </label>
                             </div>
                             <div class="mb-3">
 
@@ -110,6 +100,28 @@
                     })
                 }
             });
+            $(document).on('change', '#shareCateloge', function(event) {
+                console.log(event.target.value);
+                if (event.target.value == 'All')
+                    $("#category").prop("disabled", true);
+                else {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/filter-category',
+                        data: {
+                            'id': event.target.value
+                        },
+                        success: function(response) {
+                            $("#fCategory").prop("disabled", false);
+                            $("#fCategory").html(response);
+
+
+
+                        }
+                    })
+                }
+            });
+
             $(document).on('click', '#shareBtn', function() {
                 var catelog = $('#cataloge').val();
                 var category = $('#category').val();

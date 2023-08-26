@@ -40,7 +40,7 @@
                         <th>Price</th>
                         <th>Category</th>
                         <th>Image</th>
-                        <th>Actions</th>
+                        <th style="text-align: center">Actions</th>
                     </tr>
                 </thead>
                 @foreach ($products as $product)
@@ -63,17 +63,23 @@
 
 
                             <td>
-                                {{-- <img src="{{url('/images/{{$product->image}}')}}" alt="Image" alt="apple" width="80"> --}}
+
                                 <img src='{{ url('images/' . $product->image) }}' alt="apple"
                                     style="width:90px; height:90px">
                             </td>
-                            <td>
+                            <td style="width: 383px">
                                 <div class="btn-group">
                                     <button value={{ $product->id }}
                                         class="btn btn-primary editButton btn-sm slide_start_button action_button_class">Edit</button>
                                     <button value={{ $product->id }}
                                         class="btn btn-danger deleteButton btn-sm slide_stop_button action_button_class">Delete</button>
 
+                                    <div class="form-check form-switch">
+                                        <input value={{ $product->id }} class="form-check-input" type="checkbox"
+                                            role="switch" id="flexSwitchCheckDefault"
+                                            {{ $product->out_of_stock === 0 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Out Of Stock</label>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -110,14 +116,19 @@
                         <div class="col-xs-2">
 
 
-                            <select class="form-select form-select-sm" name="cataloge_id" required>
-                                <option selected>Choose A Cateloge</option>
+                            <select class="form-select form-select-sm" name="cataloge_id" id="cataloge" required>
+
                                 @for ($i = 0; $i < count($cataloges); $i++)
                                     <option value="{{ $cataloges[$i]->id }}">{{ $cataloges[$i]->name }}</option>
                                 @endfor
 
                             </select>
-                            <label> Cateloges </label>
+                            <label> Main Category </label>
+                        </div>
+                        <div class="col-xs-2">
+
+                            @include('filter-category')
+                            <label class="form-lable"> Sub Category </label>
                         </div>
                         <div class="col-xs-2 ">
 
@@ -139,21 +150,13 @@
                             <input name="price" step="any" type="number" class="form-control" required>
                             <label class="form-lable" for="price">Price</label>
                         </div>
-
                         <div class="col-xs-2">
 
-                            <select class="form-select form-select-sm" name="category_id" required>
-
-                                <option selected>Choose A Category</option>
-
-                                @for ($i = 0; $i < count($categories); $i++)
-                                    <option value="{{ $categories[$i]->id }}">{{ $categories[$i]->name }}</option>
-                                @endfor
-
-
-                            </select>
-                            <label class="form-lable"> Category </label>
+                            <input name="quantity" step="any" type="number" class="form-control">
+                            <label class="form-lable" for="price">Quantity</label>
                         </div>
+
+
                         <div class="form-group">
                             <label for="mImage">Choose Image</label>
                             <input type="file" name="mImage" class="form-control" required />
@@ -230,10 +233,7 @@
                             </select>
                             <label class="form-lable"> Category </label>
                         </div>
-                        {{-- <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Out of Stock</label>
-                          </div> --}}
+
                         <div class="form-group">
                             <label for="mImage">Choose Image</label>
                             <input type="file" name="pr_mImage" id="pr_mImage" class="form-control" />
@@ -282,6 +282,29 @@
     <script>
         $(document).ready(function() {
 
+            $(document).on('change', '#cataloge', function(event) {
+                console.log(event.target.value);
+                if (event.target.value == 'All')
+                    $("#category").prop("disabled", true);
+                else {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/filter-category',
+                        data: {
+                            'id': event.target.value
+                        },
+                        success: function(response) {
+                            $("#category").prop("disabled", false);
+                            $("#category").html(response);
+
+
+
+                        }
+                    })
+                }
+            });
+
+
             $(document).on('click', '.editButton', function() {
                 var product_id = $(this).val();
                 $('#editEmployeeModal').modal('show');
@@ -318,7 +341,17 @@
                     }
                 })
 
-            })
+            });
+            $(".form-check  input:checkbox").click(function() {
+
+                var product_id = $(this).val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "/toggle-product/" + product_id
+                })
+
+            });
 
 
 

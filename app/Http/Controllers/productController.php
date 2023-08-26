@@ -19,12 +19,9 @@ class productController extends Controller
 
     public function home()
     {
-        $products = DB::table('products')->get();
+        $products = DB::table('products')->where('out_of_stock', '!=', 0)->get();
         $categories = Category::get();
         $cataloges = Cataloge::get();
-
-
-
         return view('dashboard', compact('products', 'categories', 'cataloges'));
     }
     public function products()
@@ -60,6 +57,7 @@ class productController extends Controller
             $Item_Number = $request->Item_Number;
             $categroy_id = $request->category_id;
             $cataloge_id = $request->cataloge_id;
+            $quantity = $request->quantity;
             $image = $request->file('mImage');
             $Description = "No description is added for this product";
 
@@ -78,6 +76,9 @@ class productController extends Controller
             $product->cataloge_id = $cataloge_id;
             $product->price = $price;
             $product->image = $imageName;
+            if ($quantity > 0)
+                $product->quantity = $quantity;
+
             $product->save();
             return back()->with('success', 'The product has been saved');
         }
@@ -135,43 +136,26 @@ class productController extends Controller
         $sercch = $request->input('search');
         $catalog = $request->input('catalog');
         $category = $request->input('category');
-
-        if ($catalog == 'All' && $category != 'All')
-
-            $products = Product::where('category_id', $category)->get();
-
-
-        elseif ($catalog != 'All' && $category == 'All')
-            $products = Product::where('cataloge_id', $catalog)->get();
-
-
-        elseif ($catalog != 'All' && $category != 'All')
-            $products = Product::where('cataloge_id', $catalog)->where('category_id', $category)->get();
-
-
-
-
+        if ($catalog == 'All')
+            $products = Product::get()->where('out_of_stock', '!=', 0);
+        else
+            $products = Product::where('cataloge_id', $catalog)->where('category_id', $category)->where('out_of_stock', '!=', 0)->get();
         return view('prdouct-table', compact('products'));
     }
     public function exportProduct(Request $request)
     {
         $cataloge_id = $request->cataloge_id;
-        $category_id = $request->pr_category_id;
+        $category_id = $request->category_id;
         $print_type = $request->print_type;
         $title = $request->cat_title;
 
-        if ($cataloge_id == 'All' && $category_id != 'All')
 
-            $products = Product::where('category_id', $category_id)->get();
-
-
-        elseif ($cataloge_id != 'All' && $category_id == 'All')
-            $products = Product::where('cataloge_id', $category_id)->get();
-
-
-        elseif ($cataloge_id != 'All' && $category_id != 'All')
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->get();
+        if ($cataloge_id == 'All')
+            $products = Product::get()->where('out_of_stock', '!=', 0);
+        else
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->where('out_of_stock', '!=', 0)->get();
         $data['products'] = $products;
+
         if ($print_type == '2') {
             $pdf = Pdf::loadView('print.two-items', $data)->setPaper('a4', 'landscape');
         } else
@@ -184,5 +168,11 @@ class productController extends Controller
         $id = $request->id;
         $categories = Category::where('cataloge_id', $id)->get();
         return view('filter-category', compact('categories'));
+    }
+    public function toggleProduct($id)
+    {
+        $product = Product::find($id);
+        $product->out_of_stock = $product->out_of_stock === 1 ? 0 : 1;
+        $product->save();
     }
 }

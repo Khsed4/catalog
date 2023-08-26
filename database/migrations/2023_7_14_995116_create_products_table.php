@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('SKU');
             $table->string('item_number', 100)->nullable();
             $table->string('image');
-            $table->integer('out_of_stock')->default(0);
+            $table->integer('out_of_stock')->default(1);
             $table->integer('quantity')->default(0);
             $table->foreign('category_id')->references('id')->on('Category')
                 ->onDelete('cascade');
