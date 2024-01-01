@@ -21,6 +21,7 @@ use App\Http\Controllers\SocialShareButtonsController;
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
+    Route::get('/testapp', [productController::class, 'test']);
     Route::get('/admin_prodcuts', [ProductController::class, 'adminProducts'])->name('product.admin');
     Route::get('/admin_catalogues', [ProductController::class, 'adminCatalogues'])->name('catalogues.admin');
     //Product Routes
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit-product/{id}', [productController::class, 'editproduct']);
     Route::put('/update-product', [productController::class, 'updateProduct']);
     Route::get('/toggle-product/{id}', [productController::class, 'toggleProduct']);
+    Route::get('/carpets', [productController::class, 'carpets']);
     // Cataloge Routes
     Route::post('/add_cataloge', [CatalogeController::class, 'StoreCataloge'])->name('cataloge.store');
     Route::get('/edit-cataloge/{id}', [CatalogeController::class, 'editCatalog'])->name('editCataloge');

@@ -36,7 +36,7 @@ class SocialShareButtonsController extends Controller
         if ($cataloge_id == 'All')
             $products = Product::get()->where('out_of_stock', '!=', 0);
         else
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->where('out_of_stock', '!=', 0)->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->wqqget();
         return view('share-show', compact('products'));
     }
 }

@@ -8,7 +8,6 @@ use App\Models\cataloge;
 use App\Models\Category;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-use Jorenvh\Share\ShareFacade;
 
 
 
@@ -16,7 +15,11 @@ use Jorenvh\Share\ShareFacade;
 class productController extends Controller
 {
 
-
+    public function test()
+    {
+        $test = "This is my name, and that's your name, Is it okay?";
+        return view('test', compact('test'));
+    }
     public function home()
     {
         $products = DB::table('products')->where('out_of_stock', '!=', 0)->get();
@@ -61,7 +64,7 @@ class productController extends Controller
             $image = $request->file('mImage');
             $Description = "No description is added for this product";
 
-            $imageName = time() . '.' . $image->extension();
+            $imageName =  $request->SKU . '.' . $image->extension();
 
             $image->move(public_path('images'), $imageName);
 
@@ -123,7 +126,7 @@ class productController extends Controller
 
         $image = $request->file('pr_mImage');
 
-        $imageName = time() . '.' . $image->extension();
+        $imageName = $request->pr_SKU . '.' . $image->extension();
 
         $image->move(public_path('images'), $imageName);
         $product->image = $imageName;
@@ -148,20 +151,28 @@ class productController extends Controller
         $category_id = $request->category_id;
         $print_type = $request->print_type;
         $title = $request->cat_title;
+        // cataloge_id=6&category_id=129
 
-
-        if ($cataloge_id == 'All')
-            $products = Product::get()->where('out_of_stock', '!=', 0);
+        if ($cataloge_id == 'All' &&  $category_id != '0') {
+            $products = Product::where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->get();
+        } elseif ($category_id == '0')
+            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->get();
         else
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->where('out_of_stock', '!=', 0)->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'desc')->get();
         $data['products'] = $products;
 
         if ($print_type == '2') {
             $pdf = Pdf::loadView('print.two-items', $data)->setPaper('a4', 'landscape');
         } else
             $pdf = Pdf::loadView('print.one-item', $data)->setPaper('a4', 'landscape');
+        return view('print.two-items', compact('products'));
+        // return $pdf->stream($title . '.pdf');
+    }
+    public function carpets(Request $request)
+    {
+        $products = DB::table('products')->where('cataloge_id',  7)->orderBy('name', 'asc')->orderBy('category_id', 'asc')->get();
 
-        return $pdf->stream('invoice.pdf');
+        return view('print/one-item-carpets', compact('products'));
     }
     public function filterCategory(Request $request)
     {
