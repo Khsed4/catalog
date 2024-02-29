@@ -156,9 +156,9 @@ class productController extends Controller
         if ($cataloge_id == 'All' &&  $category_id != '0') {
             $products = Product::where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->get();
         } elseif ($category_id == '0')
-            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->paginate(8)->get();
         else
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'desc')->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'desc')->paginate(8)->get();
         $data['products'] = $products;
 
         if ($print_type == '2') {

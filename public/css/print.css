@@ -8,7 +8,6 @@ header {
     height: 35px;
     text-align: center;
     color: #f5f5f5;
-    font-weight: bold;
     font-size: 28px;
 }
 
@@ -23,23 +22,26 @@ table {
     height: 100vh;
     margin-top: 44px;
     text-align: center;
-    font-family: arial;
     border: 3px solid rgb(58, 52, 52);
-    position: relative;
     background-color: white;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column
 }
 
 .image {
     max-width: 100%;
-    max-height: 550px;
+    max-height: 450px;
     object-fit: contain;
     margin: 5px;
-    margin-right: 10px;
+
+
 }
 
 .price {
     color: grey;
-    font-size: 22px;
+
+
 }
 
 .second {
@@ -53,6 +55,7 @@ table {
 
 body {
     background-color: #f2f2f2;
+    font-family: 'Courier New', Courier, monospace
 }
 
 .name {
@@ -63,29 +66,25 @@ body {
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 18px;
     padding: 7px;
     background: #2690ed;
     border: solid #ebe4e4 2px;
     font-weight: bolder;
     text-align: center;
-    margin-left: 12px
+
 }
 
 
 
 .quantity {
-    margin-left: auto;
-    width: 30%;
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
     background: rgb(243, 7, 7);
-    padding: 5px 20px 5px 20px;
+    padding: 5px 10px 5px 10px;
     border: solid #ebe4e4 2px;
 }
 
@@ -99,57 +98,62 @@ body {
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
-    padding: 5px 20px 5px 20px;
+    padding: 4px 20px 4px 20px;
     text-decoration: none;
     border: solid #ebe4e4 2px;
-    margin-left: 50px;
-    font-weight: bold;
 }
 
 .price {
-    margin-right: 50px;
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
     background: rgb(230, 83, 83);
-    padding: 5px 20px 5px 20px;
+    padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .item-number {
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
-    font-family: Arial;
     color: #ffffff;
-    font-size: 15px;
     background: gray;
-    padding: 5px 20px 5px 20px;
+    padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
     font-weight: bolder;
+}
+
+.off-price {
+
+    color: rgb(17, 17, 17);
+    text-decoration: line-through;
+    text-decoration-color: rgb(36, 34, 34);
+    font-weight: bold;
 }
 
 td {
     width: 50%;
 }
 
-.itemsIn {
-    width: 33%;
-    font-size: 18px;
-}
+
 
 .mainDiv {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 16px;
+
+
+
 }
+
+.title {}
+
+.image-div {}
 
 @media print {
 
@@ -157,7 +161,8 @@ td {
         height: 100%;
         size: 'A4 landscape';
         margin: 0;
-        background-image: linear-gradient(to right, #ff6e7f, #bfe9ff);
+        background-image: white;
+        max-width: 98%;
 
 
     }
@@ -169,8 +174,8 @@ td {
     }
 
     .card {
-        height: 93vh;
-        background-image: linear-gradient(to right, #ffefba, #ffffff);
+        height: 80vh;
+        background-image: white;
 
     }
 
