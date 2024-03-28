@@ -1,14 +1,17 @@
-header {
+.header {
     position: fixed;
-    top: 5px;
-    border: 3px solid rgb(67, 55, 133);
+    bottom: 15px;
+    border: 3px solid rgb(252, 252, 252);
     left: 0px;
     right: 0px;
-    background-color: rgb(235, 98, 19);
+    background-color: #0dc9ba;
     height: 35px;
     text-align: center;
     color: #f5f5f5;
     font-size: 28px;
+    display: flex;
+    border-radius: 10%;
+    justify-content: space-evenly;
 }
 
 table {
@@ -25,15 +28,16 @@ table {
     border: 3px solid rgb(58, 52, 52);
     background-color: white;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     flex-direction: column
 }
 
 .image {
-    max-width: 100%;
+    max-width: 96%;
     max-height: 450px;
     object-fit: contain;
-    margin: 5px;
+    border: 1px solid #014c4f;
+    border-radius: 10%;
 
 
 }
@@ -54,7 +58,8 @@ table {
 }
 
 body {
-    background-color: #f2f2f2;
+    /* background-color: #014c4f; */
+    background-color: #f9f7f7;
     font-family: 'Courier New', Courier, monospace
 }
 
@@ -67,9 +72,9 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    font-size: 18px;
+    font-size: 22px;
     padding: 7px;
-    background: #2690ed;
+    background: #feb55e;
     border: solid #ebe4e4 2px;
     font-weight: bolder;
     text-align: center;
@@ -89,7 +94,7 @@ body {
 }
 
 .SKU {
-    background: #60e00a !important;
+    background: #feb55e !important;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
     background-image: -moz-linear-gradient(top, #3498db, #2980b9);
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
@@ -102,6 +107,7 @@ body {
     padding: 4px 20px 4px 20px;
     text-decoration: none;
     border: solid #ebe4e4 2px;
+    font-weight: bolder;
 }
 
 .price {
@@ -109,10 +115,11 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    background: rgb(230, 83, 83);
+    background: #0dc9ba;
     padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
+    font-weight: bolder;
 }
 
 .item-number {
@@ -120,7 +127,7 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    background: gray;
+    background: rgb(48, 47, 47);
     padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
@@ -142,18 +149,15 @@ td {
 
 
 .mainDiv {
-    margin-top: 5px;
     display: flex;
-    justify-content: space-evenly;
-    font-size: 16px;
+    justify-content: space-around;
+    font-size: 23px;
+    margin-bottom: 10px;
 
 
 
 }
 
-.title {}
-
-.image-div {}
 
 @media print {
 
@@ -175,7 +179,7 @@ td {
 
     .card {
         height: 80vh;
-        background-image: white;
+        background-image: #f9f7f7;
 
     }
 
