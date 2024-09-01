@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->foreign('category_id')->references('id')->on('Category')
                 ->onDelete('cascade');
             $table->foreign('cataloge_id')->references('id')->on('Cataloge')
-                ->onDelete('cascade');
+                ->onDelete('casca de');
         });
     }
     /**

@@ -4,7 +4,7 @@
     border: 3px solid rgb(252, 252, 252);
     left: 0px;
     right: 0px;
-    background-color: #0dc9ba;
+    background-color: rgb(34, 134, 216);
     height: 35px;
     text-align: center;
     color: #f5f5f5;
@@ -25,18 +25,19 @@ table {
     height: 100vh;
     margin-top: 44px;
     text-align: center;
-    border: 3px solid rgb(58, 52, 52);
+    border: 1px solid rgb(34, 134, 216);
     background-color: white;
     display: flex;
     justify-content: space-between;
-    flex-direction: column
+    flex-direction: column;
+    border-radius: 50px;
 }
 
 .image {
     max-width: 96%;
     max-height: 450px;
     object-fit: contain;
-    border: 1px solid #014c4f;
+    border: 1px solidrgb(34, 134, 216);
     border-radius: 10%;
 
 
@@ -64,20 +65,21 @@ body {
 }
 
 .name {
-    /* width: 90%; */
+
+
+
     /* Active it for normal catalouge  */
     /* position: absolute; */
     /* bottom: 100px; */
-    -webkit-border-radius: 28;
-    -moz-border-radius: 28;
+
     border-radius: 28px;
     color: #ffffff;
     font-size: 22px;
     padding: 7px;
-    background: #feb55e;
+    background: rgb(34, 134, 216);
     border: solid #ebe4e4 2px;
     font-weight: bolder;
-    text-align: center;
+
 
 }
 
@@ -88,13 +90,14 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    background: rgb(243, 7, 7);
+    background: rgb(34, 134, 216);
+    ;
     padding: 5px 10px 5px 10px;
     border: solid #ebe4e4 2px;
 }
 
 .SKU {
-    background: #feb55e !important;
+    background: rgb(34, 134, 216) !important;
     background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
     background-image: -moz-linear-gradient(top, #3498db, #2980b9);
     background-image: -ms-linear-gradient(top, #3498db, #2980b9);
@@ -115,7 +118,7 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    background: #0dc9ba;
+    background: rgb(34, 134, 216);
     padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
@@ -127,7 +130,7 @@ body {
     -moz-border-radius: 28;
     border-radius: 28px;
     color: #ffffff;
-    background: rgb(48, 47, 47);
+    background: rgb(34, 134, 216);
     padding: 4px 20px 4px 20px;
     border: solid #ebe4e4 2px;
     text-decoration: none;
@@ -178,8 +181,11 @@ td {
     }
 
     .card {
+
         height: 80vh;
         background-image: #f9f7f7;
+        margin-left: 5px;
+        margin-right: 5px;
 
     }
 
