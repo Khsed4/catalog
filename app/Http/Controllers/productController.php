@@ -154,11 +154,11 @@ class productController extends Controller
         // cataloge_id=6&category_id=129
 
         if ($cataloge_id == 'All' &&  $category_id != '0') {
-            $products = Product::where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->get();
+            $products = Product::where('out_of_stock', '!=', 0)->orderBy('category_id', 'ASC')->get();
         } elseif ($category_id == '0')
-            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'desc')->paginate(8)->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'ASC')->paginate(8)->get();
         else
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'desc')->paginate(8)->get();
+            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'ASC')->paginate(8)->get();
         $data['products'] = $products;
 
         if ($print_type == '2') {
@@ -179,6 +179,12 @@ class productController extends Controller
         $id = $request->id;
         $categories = Category::where('cataloge_id', $id)->get();
         return view('filter-category', compact('categories'));
+    }
+    public function getSKU(Request $request)
+    {
+        $sky = Product::select('SKU')->get();
+        return $sky;
+
     }
     public function toggleProduct($id)
     {

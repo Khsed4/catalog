@@ -18,6 +18,14 @@
 <body>
 
     <div class="page">
+        <div class="header" style="display:inline' ;overflow:inherit ">
+            <div>
+                <p style="margin-top:2px;font-size: 35px;font-weight: bold">uniquenaturalllc@gmail.com</p>
+            </div>
+            <div>
+                <p style="margin-top:2px;font-size: 35px;font-weight: bold">+1 (240) 605 1416</p>
+            </div>
+            </div>
         <table>
             @for ($i = 0; $i < count($products); $i += 2)
                 <tbody>
@@ -34,19 +42,19 @@
                                 </div>
 
                                 <div class="mainDiv">
-                                    @if ($products[$i]->actual_price > 0)
+                                    @if ($products[$i]->discount_price > 0)
                                         <span class="price">
+                                            Price:
                                             <span class="off-price">
-                                                ${{ $products[$i]->price }}
+                                                {{ $products[$i]->price }}$
                                             </span>
-                                            <span>${{ $products[$i]->actual_price }}</span>
+                                            <span>{{ $products[$i]->discount_price }}</span>
                                         </span>
                                     @else
                                         <span class="price">Price:${{ $products[$i]->price }}</span>
                                     @endif
 
-                                    <span class="item-number itemsIn"> Code:
-                                        {{ $products[$i]->item_number }}</span>
+
                                     <span class="SKU ">SKU: {{ $products[$i]->SKU }}</span>
 
                                 </div>
@@ -68,19 +76,19 @@
                                     </div>
 
                                     <div class="mainDiv">
-                                        @if ($products[$i + 1]->actual_price > 0)
+                                        @if ($products[$i + 1]->discount_price > 0)
                                             <span class="price">
+                                                Price:
                                                 <span class="off-price">
-                                                    ${{ $products[$i + 1]->price }}
+                                                    {{ $products[$i + 1]->price }}$
                                                 </span>
-                                                <span>${{ $products[$i + 1]->actual_price }}</span>
+                                                <span>${{ $products[$i + 1]->discount_price }}</span>
                                             </span>
                                         @else
                                             <span class="price">Price:${{ $products[$i + 1]->price }}</span>
                                         @endif
 
-                                        <span class="item-number itemsIn"> Code:
-                                            {{ $products[$i + 1]->item_number }}</span>
+
                                         <span class="SKU ">SKU: {{ $products[$i + 1]->SKU }}</span>
 
                                     </div>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CatalogeController;
+use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\productController;
 use App\Http\Controllers\SocialShareButtonsController;
 /*
@@ -57,3 +58,6 @@ Route::get('/newproducts', [SocialShareButtonsController::class, 'showShare']);
 Route::get('/search-prodcut', [productController::class, 'searchProduct']);
 Route::get('/export-product', [productController::class, 'exportProduct']);
 Route::get('/filter-category', [productController::class, 'filterCategory']);
+Route::get('/export', [ExcelExportController::class, 'index'])->name('export');
+
+

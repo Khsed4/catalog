@@ -16,15 +16,18 @@
 </head>
 
 <body>
-    <header style="display:inline';overflow:inherit ">
-
-        <p style="margin-top:2px;font-size: 25px;font-weight: bold">Unique Natural LLC</p>
 
 
-    </header>
 
     <div class="page">
-
+        <div class="header" style="display:inline' ;overflow:inherit ">
+            <div>
+                <p style="margin-top:2px;font-size: 25px;font-weight: bold">uniquenaturalllc@gmail.com</p>
+            </div>
+            <div>
+                <p style="margin-top:2px;font-size: 25px;font-weight: bold">+1 (240) 605 1416</p>
+            </div>
+            </div>
         <table>
 
 
