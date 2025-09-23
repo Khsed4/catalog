@@ -11,7 +11,7 @@
 
     </div>
 
-    <form class="product_form" action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="product_form" action="{{ url('store-product') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- 2 column grid layout with text inputs for the first and last names -->
