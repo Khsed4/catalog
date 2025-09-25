@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 
 
-class productController extends Controller
+class ProductController extends Controller
 {
 
     public function test()

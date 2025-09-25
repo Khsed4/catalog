@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CatalogeController;
-use App\Http\Controllers\productController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SocialShareButtonsController;
 /*
 |--------------------------------------------------------------------------
@@ -15,24 +15,24 @@ use App\Http\Controllers\SocialShareButtonsController;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
-|
+|`
 */
 
 
 Auth::routes();
 Route::middleware('auth')->group(function () {
-    Route::get('/testapp', [productController::class, 'test']);
+    Route::get('/testapp', [ProductController::class, 'test']);
     Route::get('/admin_prodcuts', [ProductController::class, 'adminProducts'])->name('product.admin');
     Route::get('/admin_catalogues', [ProductController::class, 'adminCatalogues'])->name('catalogues.admin');
     //Product Routes
     Route::get('/products', [ProductController::class, 'products']);
     Route::post('/store-product', [ProductController::class, 'storeProducts']);
-    Route::get('/delete-prodcut/{id}', [productController::class, 'deleteProduct']);
-    Route::post('/remove-product', [productController::class, 'removeProduct']);
-    Route::get('/edit-product/{id}', [productController::class, 'editproduct']);
-    Route::put('/update-product', [productController::class, 'updateProduct']);
-    Route::get('/toggle-product/{id}', [productController::class, 'toggleProduct']);
-    Route::get('/carpets', [productController::class, 'carpets']);
+    Route::get('/delete-prodcut/{id}', [ProductController::class, 'deleteProduct']);
+    Route::post('/remove-product', [ProductController::class, 'removeProduct']);
+    Route::get('/edit-product/{id}', [ProductController::class, 'editproduct']);
+    Route::put('/update-product', [ProductController::class, 'updateProduct']);
+    Route::get('/toggle-product/{id}', [ProductController::class, 'toggleProduct']);
+    Route::get('/carpets', [ProductController::class, 'carpets']);
     // Cataloge Routes
     Route::post('/add_cataloge', [CatalogeController::class, 'StoreCataloge'])->name('cataloge.store');
     Route::get('/edit-cataloge/{id}', [CatalogeController::class, 'editCatalog'])->name('editCataloge');
@@ -51,9 +51,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // End of Category Routes
-Route::get('/', [productController::class, 'home']);
+Route::get('/', [ProductController::class, 'home']);
 Route::get('/share-product', [SocialShareButtonsController::class, 'ShareWidget']);
 Route::get('/newproducts', [SocialShareButtonsController::class, 'showShare']);
-Route::get('/search-prodcut', [productController::class, 'searchProduct']);
-Route::get('/export-product', [productController::class, 'exportProduct']);
-Route::get('/filter-category', [productController::class, 'filterCategory']);
+Route::get('/search-prodcut', [ProductController::class, 'searchProduct']);
+Route::get('/export-product', [ProductController::class, 'exportProduct']);
+Route::get('/filter-category', [ProductController::class, 'filterCategory']);
