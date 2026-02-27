@@ -14,21 +14,9 @@
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6 position-relative">
-                        <div class="position-absolute top-0 start-0">
-                            <a href="{{ url('categories') }}" class="btn btn-success "><i
-                                    class="material-icons">&#xE147;</i> <span>Sub-categories</span></a>
-                            <a href="{{ url('cataloges') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
-                                <span>Main-categories</span></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
-
-                    </div>
-                </div>
+                <h2>Products</h2>
+                <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+                        class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
             </div>
             <table class="table table-striped table-hover table-condensed ">
                 <thead>
@@ -55,11 +43,7 @@
                             <td>{{ $product->price }}</td>
 
 
-                            @foreach ($categories as $category)
-                                @if ($category->id == $product->category_id)
-                                    <td>{{ $category->name }}</td>
-                                @endif
-                            @endforeach
+                            <td>{{ $product->category_name }}</td>
 
 
                             <td>
@@ -88,16 +72,7 @@
                 @endforeach
             </table>
             <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+                <div class="hint-text" style="padding: 10px 0; color: #888;">Total: <b>{{ count($products) }}</b> products</div>
             </div>
         </div>
     </div>
@@ -114,21 +89,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="col-xs-2">
-
-
-                            <select class="form-select form-select-sm" name="cataloge_id" id="cataloge" required>
-
-                                @for ($i = 0; $i < count($cataloges); $i++)
-                                    <option value="{{ $cataloges[$i]->id }}">{{ $cataloges[$i]->name }}</option>
-                                @endfor
-
+                            <select class="form-select form-select-sm" name="category_id" required>
+                                <option selected>Choose A Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
                             </select>
-                            <label> Main Category </label>
+                            <label> Category </label>
                         </div>
                         <div class="col-xs-2">
-
-                            @include('filter-category')
-                            <label class="form-lable"> Sub Category </label>
+                            <select class="form-select form-select-sm" name="catalogue_id">
+                                <option value="" selected>None (No Catalogue)</option>
+                                @foreach ($catalogues as $catalogue)
+                                    <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
+                                @endforeach
+                            </select>
+                            <label> Catalogue </label>
                         </div>
                         <div class="col-xs-2 ">
 
@@ -184,20 +160,7 @@
                             aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-xs-2">
-
-
-                            <select class="form-select form-select-sm" name="cataloge_id" required>
-                                <option selected>Choose A Cateloge</option>
-                                @for ($i = 0; $i < count($cataloges); $i++)
-                                    <option value="{{ $cataloges[$i]->id }}">{{ $cataloges[$i]->name }}</option>
-                                @endfor
-
-                            </select>
-                            <label> Cateloges </label>
-                        </div>
                         <div class="col-xs-2 ">
-
                             <input name="pr_name" id="pr_name" type="text" class="form-control" required>
                             <label class="form-lable" for="name">Name</label>
                         </div>
@@ -232,6 +195,16 @@
 
                             </select>
                             <label class="form-lable"> Category </label>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <select name="pr_catalogue_id" class="form-select form-select-sm" id="pr_catalogue_id">
+                                <option value="" selected>None (No Catalogue)</option>
+                                @foreach ($catalogues as $catalogue)
+                                    <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
+                                @endforeach
+                            </select>
+                            <label class="form-lable"> Catalogue </label>
                         </div>
 
                         <div class="form-group">
@@ -281,30 +254,6 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-
-            $(document).on('change', '#cataloge', function(event) {
-                console.log(event.target.value);
-                if (event.target.value == 'All')
-                    $("#category").prop("disabled", true);
-                else {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/filter-category',
-                        data: {
-                            'id': event.target.value
-                        },
-                        success: function(response) {
-                            $("#category").prop("disabled", false);
-                            $("#category").html(response);
-
-
-
-                        }
-                    })
-                }
-            });
-
-
             $(document).on('click', '.editButton', function() {
                 var product_id = $(this).val();
                 $('#editEmployeeModal').modal('show');
@@ -320,6 +269,7 @@
                         $('#pr_SKU').val(response.product.SKU);
                         $('#pr_price').val(response.product.price);
                         $('#pr_Item_Number').val(response.product.item_number);
+                        $('#pr_catalogue_id').val(response.product.catalogue_id || '');
                     }
                 })
 

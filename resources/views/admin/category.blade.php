@@ -14,31 +14,15 @@
     <div class="container">
         <div class="table-wrapper">
             <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6 position-relative">
-                        <div class="position-absolute top-0 start-0">
-                            <a href="{{ url('products') }}" class="btn btn-success "><i class="material-icons">&#xE147;</i>
-                                <span>Products</span></a>
-                            <a href="{{ url('cataloges') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i>
-                                <span>Main-Categories</span></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Category</span></a>
-
-                    </div>
-                </div>
+                <h2>Categories</h2>
+                <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+                        class="material-icons">&#xE147;</i> <span>Add New Category</span></a>
             </div>
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
-
                         <th>Name</th>
-                        <th>Main Category</th>
-
                         <th>Description</th>
-
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -46,16 +30,7 @@
                 <tbody>
                     @for ($i = 0; $i < count($category); $i += 1)
                         <tr>
-
-
                             <td>{{ $category[$i]->name }}</td>
-                            @foreach ($cateloges as $cateloge)
-                                @if ($cateloge->id == $category[$i]->cataloge_id)
-                                    <td>{{ $cateloge->name }}</td>
-                                @endif
-                            @endforeach
-
-
                             <td>{{ $category[$i]->description }}</td>
 
                             <td>
@@ -73,16 +48,7 @@
 
             </table>
             <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+                <div class="hint-text" style="padding: 10px 0; color: #888;">Total: <b>{{ count($category) }}</b> categories</div>
             </div>
         </div>
     </div>
@@ -102,24 +68,11 @@
                             <label>Name</label>
                             <input name="name" type="text" class="form-control" required>
                         </div>
-                        <div class="form-group">
-
-
-                            <select class="form-select form-select-sm" name="cataloge_id" required>
-
-                                @for ($i = 0; $i < count($cateloges); $i++)
-                                    <option value="{{ $cateloges[$i]->id }}">{{ $cateloges[$i]->name }}</option>
-                                @endfor
-
-                            </select>
-                            <label> Cateloges </label>
-                        </div>
 
                         <div class="form-group">
                             <label>Description</label>
                             <input type="textarea" name='description' class="form-control" required>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -143,22 +96,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label> name</label>
+                            <label>Name</label>
                             <input name="name" id="name" type="text" class="form-control" required>
                         </div>
 
-                        <div class="form-group">
-
-
-                            <select class="form-select form-select-sm" name="cataloge_id" required>
-
-                                @for ($i = 0; $i < count($cateloges); $i++)
-                                    <option value="{{ $cateloges[$i]->id }}">{{ $cateloges[$i]->name }}</option>
-                                @endfor
-
-                            </select>
-                            <label> Main Category </label>
-                        </div>
                         <div class="form-group">
                             <label>Description</label>
                             <input name="description" id="description" type="textarea" class="form-control" required>
@@ -215,11 +156,9 @@
                     type: "GET",
                     url: "/edit-category/" + cat_id,
                     success: function(response) {
-
                         console.log(response);
                         $('#name').val(response.category.name);
                         $('#cat_id').val(response.category.id);
-                        $('#cataloge_id').val(response.category.cataloge_id);
                         $('#description').val(response.category.description);
                     }
                 })

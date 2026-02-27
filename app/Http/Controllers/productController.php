@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\cataloge;
 use App\Models\Category;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Catalogue;
+use App\Models\CompanySetting;
 use Illuminate\Support\Facades\DB;
 
 
@@ -22,18 +22,29 @@ class ProductController extends Controller
     }
     public function home()
     {
-        $products = DB::table('products')->where('out_of_stock', '!=', 0)->get();
-        $categories = Category::get();
-        $cataloges = Cataloge::get();
-        return view('dashboard', compact('products', 'categories', 'cataloges'));
+        $products = Product::where('out_of_stock', false)
+            ->join('category', 'products.category_id', '=', 'category.id')
+            ->orderBy('category.name', 'ASC')
+            ->select('products.*', 'category.name as category_name')
+            ->get();
+
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $catalogues = Catalogue::orderBy('name', 'ASC')->get();
+        $company = CompanySetting::first();
+
+        return view('dashboard', compact('products', 'categories', 'catalogues', 'company'));
     }
     public function products()
     {
-        $products = Product::orderBy('category_id', 'asc')->get();
-        $categories = Category::get();
-        $cataloges = Cataloge::get();
+        $products = Product::join('category', 'products.category_id', '=', 'category.id')
+            ->orderBy('category.name', 'ASC')
+            ->select('products.*', 'category.name as category_name')
+            ->get();
 
-        return view('admin.products', compact('products', 'categories', 'cataloges'));
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $catalogues = Catalogue::orderBy('name', 'ASC')->get();
+
+        return view('admin.products', compact('products', 'categories', 'catalogues'));
     }
 
     public function outOfStock()
@@ -59,7 +70,6 @@ class ProductController extends Controller
             $SKU = $request->SKU;
             $Item_Number = $request->Item_Number;
             $categroy_id = $request->category_id;
-            $cataloge_id = $request->cataloge_id;
             $quantity = $request->quantity;
             $image = $request->file('mImage');
             $Description = "No description is added for this product";
@@ -68,15 +78,13 @@ class ProductController extends Controller
 
             $image->move(public_path('images'), $imageName);
 
-
-
             $product = new Product();
             $product->name = $name;
             $product->SKU = $SKU;
             $product->description = $Description;
             $product->item_number = $Item_Number;
             $product->category_id = $categroy_id;
-            $product->cataloge_id = $cataloge_id;
+            $product->catalogue_id = $request->catalogue_id;
             $product->price = $price;
             $product->image = $imageName;
             if ($quantity > 0)
@@ -111,7 +119,6 @@ class ProductController extends Controller
     }
     public function updateProduct(Request $request)
     {
-
         $pr_id = $request->input('pr_id');
         $product = Product::find($pr_id);
         $name = $request->pr_name;
@@ -119,67 +126,96 @@ class ProductController extends Controller
         $product->name = $name;
         $product->price = $request->pr_price;
         $product->SKU = $request->pr_SKU;
-        $product->price = $request->pr_price;
         $product->item_number = $request->pr_Item_Number;
         $product->category_id = $request->pr_category_id;
-        $product->cataloge_id = $request->cataloge_id;
+        $product->catalogue_id = $request->pr_catalogue_id;
 
-        $image = $request->file('pr_mImage');
+        if ($request->hasFile('pr_mImage')) {
+            $image = $request->file('pr_mImage');
+            $imageName = $request->pr_SKU . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
 
-        $imageName = $request->pr_SKU . '.' . $image->extension();
-
-        $image->move(public_path('images'), $imageName);
-        $product->image = $imageName;
         $product->save();
-        return back()->with('catalog_added', 'The Cataloge has been Updated');
+        return back()->with('success', 'The Product has been Updated');
     }
     public function searchProduct(Request $request)
     {
-
-        $sercch = $request->input('search');
-        $catalog = $request->input('catalog');
+        $search = $request->input('search');
         $category = $request->input('category');
-        if ($catalog == 'All')
-            $products = Product::get()->where('out_of_stock', '!=', 0);
-        else
-            $products = Product::where('cataloge_id', $catalog)->where('category_id', $category)->where('out_of_stock', '!=', 0)->get();
+        $catalogue = $request->input('catalogue');
+
+        $query = Product::where('out_of_stock', false);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('products.name', 'like', '%' . $search . '%')
+                  ->orWhere('products.SKU', 'like', '%' . $search . '%')
+                  ->orWhere('products.item_number', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($category && $category != '0' && $category != 'All') {
+            $query->where('products.category_id', $category);
+        }
+
+        if ($catalogue && $catalogue != 'All') {
+            $query->where('products.catalogue_id', $catalogue);
+        }
+
+        $products = $query->join('category', 'products.category_id', '=', 'category.id')
+            ->orderBy('category.name', 'ASC')
+            ->select('products.*', 'category.name as category_name')
+            ->get();
+
         return view('prdouct-table', compact('products'));
     }
     public function exportProduct(Request $request)
     {
-
-        $cataloge_id = $request->cataloge_id;
         $category_id = $request->category_id;
+        $catalogue_id = $request->catalogue_id;
         $print_type = $request->print_type;
-        $title = $request->cat_title;
-        // cataloge_id=6&category_id=129
+        $title = $request->cat_title ?? 'Catalog';
 
-        if ($cataloge_id == 'All' &&  $category_id != '0') {
-            $products = Product::where('out_of_stock', '!=', 0)->orderBy('category_id', 'ASC')->get();
-        } elseif ($category_id == '0') {
-            $products = Product::where('cataloge_id', $cataloge_id)->where('out_of_stock', '!=', 0)->orderBy('category_id', 'ASC')->paginate(8)->get();
-        } else
-            $products = Product::where('cataloge_id', $cataloge_id)->where('category_id', $category_id)->orderBy('category_id', 'desc')->paginate(8)->get();
-        $data['products'] = $products;
+        // Fetch company settings for cover page
+        $company = CompanySetting::first();
 
-        if ($print_type == '2') {
-            $pdf = Pdf::loadView('print.two-items', $data)->setPaper('a4', 'landscape');
-        } else
-            $pdf = Pdf::loadView('print.one-item', $data)->setPaper('a4', 'landscape');
+        // Build query - sort by category name
+        $query = Product::where('out_of_stock', false)
+            ->join('category', 'products.category_id', '=', 'category.id')
+            ->orderBy('category.name', 'ASC')
+            ->select('products.*', 'category.name as category_name');
 
-        return view('print.two-items', compact('products'));
-        // return $pdf->stream($title . '.pdf');
+        if ($category_id && $category_id != '0' && $category_id != 'All') {
+            $query->where('products.category_id', $category_id);
+        }
+
+        if ($catalogue_id && $catalogue_id != 'All') {
+            $query->where('products.catalogue_id', $catalogue_id);
+        }
+
+        $products = $query->get();
+
+        $data = compact('products', 'company', 'title');
+
+        $template = ($print_type == '2') ? 'print.two-items' : 'print.one-item';
+        return view($template, $data);
     }
     public function carpets(Request $request)
     {
-        $products = DB::table('products')->where('cataloge_id',  7)->orderBy('name', 'asc')->orderBy('category_id', 'asc')->get();
+        $products = Product::join('category', 'products.category_id', '=', 'category.id')
+            ->orderBy('category.name', 'asc')
+            ->orderBy('products.name', 'asc')
+            ->select('products.*')
+            ->get();
 
         return view('print/one-item-carpets', compact('products'));
     }
+
     public function filterCategory(Request $request)
     {
-        $id = $request->id;
-        $categories = Category::where('cataloge_id', $id)->get();
+        $categories = Category::orderBy('name', 'ASC')->get();
         return view('filter-category', compact('categories'));
     }
     public function toggleProduct($id)

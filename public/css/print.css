@@ -7,6 +7,41 @@ body {
     color: #333;
 }
 
+/* Cover Page Styles */
+.cover-page {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+}
+
+.cover-logo {
+    max-width: 400px;
+    max-height: 400px;
+    margin-bottom: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.company-name {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.company-info {
+    font-size: 22px;
+    margin: 10px 0;
+    opacity: 0.95;
+}
+
 .page {
     padding: 10px;
     margin: 20px;
@@ -24,6 +59,19 @@ body {
     padding: 10px 0;
     font-size: 16px;
     font-weight: bold;
+}
+
+/* Modern PDF Footer */
+.pdf-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
 }
 
 /* Product Container */
@@ -45,20 +93,22 @@ body {
 }
 
 .product-card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid rgb(34, 134, 216);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
     text-align: left;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
 }
 
 .image {
     max-width: 100%;
+    width: 100%;
     height: auto;
-    margin-bottom: 10px;
-    border-radius: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
 }
 
 .info {
@@ -66,15 +116,19 @@ body {
 }
 
 .name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
 }
 
 .SKU {
+    background: #edf2f7;
+    padding: 6px 12px;
+    border-radius: 6px;
     font-size: 14px;
-    color: #777;
+    color: #4a5568;
+    display: inline-block;
     margin-bottom: 10px;
 }
 
@@ -85,10 +139,11 @@ body {
 .price {
     background-color: rgb(34, 134, 216);
     color: white;
-    padding: 8px 15px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    display: inline-block;
 }
 
 /* Print Styles */
