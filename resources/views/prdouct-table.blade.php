@@ -1,36 +1,24 @@
 <div class="row" id="maincontent">
     @foreach ($products as $product)
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-                <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
-                    <img class="w-100" src='{{ url('images/' . $product->image) }}' alt="apple">
-                    <div class="mask">
-                        <div class="d-flex justify-content-start align-items-end h-100">
-                            <h5>
-                                <span class="badge bg-primary ms-2">{{ $product->SKU }}</span><span
-                                    class="badge bg-success ms-2">Eco</span><span
-                                    class="badge bg-danger ms-2">-10%</span>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="hover-overlay">
-                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                    </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s;">
+                <div style="position: relative; padding-top: 100%; background: #f8f8f8;">
+                    <img src='{{ url('images/' . $product->image) }}' alt="{{ $product->name }}"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 12px;">
                 </div>
-                <div class="card-body">
-                    <a href="" class="text-reset">
-                        <h5 class="card-title mb-3">{{ $product->name }}</h5>
-                    </a>
-                    <a href="" class="text-reset">
-                        <p>Category</p>
-                    </a>
-                    <h6 class="mb-3">
-                        <s>$61.99</s><strong class="ms-2 text-danger">{{ $product->price }}</strong>
+                <div class="card-body d-flex flex-column" style="padding: 14px 16px;">
+                    <h6 class="mb-1" style="font-weight: 600; color: #1B3A5C; font-size: 14px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ $product->name }}
                     </h6>
+                    @if(isset($product->category_name))
+                    <small class="text-muted mb-2" style="font-size: 12px;">{{ $product->category_name }}</small>
+                    @endif
+                    <div class="mt-auto d-flex justify-content-between align-items-center" style="padding-top: 8px; border-top: 1px solid #f0f0f0;">
+                        <span style="font-size: 18px; font-weight: 700; color: #1B3A5C;">${{ number_format($product->price, 2) }}</span>
+                        <span class="badge" style="background: #1B3A5C; color: #C8941A; font-size: 11px; padding: 4px 8px; border-radius: 4px;">{{ $product->SKU }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     @endforeach
-
-    </div>
-
+</div>

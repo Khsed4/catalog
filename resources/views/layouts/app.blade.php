@@ -4,27 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Unqite Trading LLC') }}</title>
+    <title>Admin - {{ config('app.name', 'Product Catalogue') }}</title>
 
-    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/script.js') }}" defer></script>
-    <script src="{{ asset('js/admin.js') }}" defer></script>
-    <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-    <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -36,74 +26,82 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-
-
-
 </head>
 
-<body style="margin-top: 0px;">
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="nav-link" href="{{ url('/') }}">
-                    Back To website
+<body>
+    {{-- ═══ SIDEBAR ═══ --}}
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <i class="material-icons" style="font-size: 28px; color: #C8941A;">inventory_2</i>
+            <div>
+                <h4>Admin Panel</h4>
+                <small>Catalogue Manager</small>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="{{ Request::is('products') ? 'active' : '' }}">
+                <a href="{{ url('products') }}">
+                    <i class="material-icons">shopping_cart</i>
+                    <span>Products</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            </li>
+            <li class="{{ Request::is('categories') ? 'active' : '' }}">
+                <a href="{{ url('categories') }}">
+                    <i class="material-icons">category</i>
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('catalogues') ? 'active' : '' }}">
+                <a href="{{ url('catalogues') }}">
+                    <i class="material-icons">menu_book</i>
+                    <span>Catalogues</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('users') ? 'active' : '' }}">
+                <a href="{{ url('users') }}">
+                    <i class="material-icons">people</i>
+                    <span>Users</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('company-settings') ? 'active' : '' }}">
+                <a href="{{ url('company-settings') }}">
+                    <i class="material-icons">settings</i>
+                    <span>Company Settings</span>
+                </a>
+            </li>
+        </ul>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            {{-- @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif --}}
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+        <div class="sidebar-footer">
+            <a href="{{ url('/') }}" class="sidebar-footer-link">
+                <i class="material-icons">arrow_back</i>
+                <span>Back to Website</span>
+            </a>
+            @auth
+            <div class="sidebar-user">
+                <i class="material-icons">account_circle</i>
+                <div>
+                    <span class="sidebar-user-name">{{ Auth::user()->name }}</span>
+                    <a href="{{ route('logout') }}" class="sidebar-logout"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             </div>
-        </nav>
+            @endauth
+        </div>
+    </aside>
 
+    {{-- ═══ MAIN CONTENT ═══ --}}
+    <div class="admin-main">
         <main>
             @yield('content')
         </main>
     </div>
+
     @yield('scripts')
 </body>
 

@@ -9,12 +9,27 @@ class Product extends Model
 {
     use HasFactory;
     protected $table = "products";
-    public function cataloge()
-    {
-        return $this->belongsTo(Cataloge::class);
-    }
+
+    protected $fillable = [
+        'name',
+        'price',
+        'SKU',
+        'item_number',
+        'description',
+        'category_id',
+        'catalogue_id',
+        'image',
+        'out_of_stock',
+        'quantity'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function catalogue()
+    {
+        return $this->belongsTo(Catalogue::class);
     }
 }

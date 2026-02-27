@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cataloge;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -11,23 +10,22 @@ class CategoryController extends Controller
 
     public function showCategories()
     {
-        $category = Category::all();
-        $cateloges = Cataloge::all();
-        return view('admin.category', compact('category', 'cateloges'));
+        $category = Category::orderBy('name', 'ASC')->get();
+        return view('admin.category', compact('category'));
     }
+
     public function storeCategory(Request $request)
     {
         $category = new Category();
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->cataloge_id = $request->cataloge_id;
         $category->save();
 
-        return back()->with('catalog_added', 'The Category has been added');
+        return back()->with('success', 'The Category has been added');
     }
     public function deleteCategory($id)
     {
-        $category = Cataloge::find($id);
+        $category = Category::find($id);
         return response()->json([
             'status' => 200,
             'category' => $category
@@ -54,12 +52,10 @@ class CategoryController extends Controller
         $cat_id = $request->input('cat_id');
         $category = Category::find($cat_id);
         $name = $request->name;
-        $cataloge_id = $request->cataloge_id;
         $description = $request->description;
         $category->name = $name;
         $category->description = $description;
-        $category->cataloge_id = $cataloge_id;
         $category->save();
-        return back()->with('catalog_added', 'The Category has been Updated');
+        return back()->with('success', 'The Category has been Updated');
     }
 }
