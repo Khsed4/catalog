@@ -102,6 +102,7 @@ class ProductController extends Controller
 
     public function updateProductOrder(Request $request)
     {
+
         $order = $request->input('order', []);
         foreach ($order as $index => $id) {
             Product::where('id', $id)->update(['sort_order' => $index + 1]);
