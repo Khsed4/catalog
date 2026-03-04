@@ -264,6 +264,21 @@
             margin-top: 2px;
         }
 
+        .cpb-original-price {
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: line-through;
+            opacity: 0.55;
+            margin-right: 6px;
+        }
+
+        .cpb-set-price {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.75;
+            margin-top: 2px;
+        }
+
         /* ═══ PAGE FOOTER ══════════════════════════════ */
         .page-footer {
             flex-shrink: 0;
@@ -416,12 +431,20 @@
                         @endif
                     </div>
                     <div class="card-price-box">
-                        <div class="cpb-price">${{ number_format($p->price, 2) }}</div>
+                        <div class="cpb-price">
+                            @if($p->original_price && $p->original_price > $p->price)
+                            <span class="cpb-original-price">${{ number_format($p->original_price, 2) }}</span>
+                            @endif
+                            ${{ number_format($p->price, 2) }}
+                            @if($p->set_price)
+                            <div class="cpb-set-price">Set: ${{ number_format($p->set_price, 2) }}</div>
+                            @endif
+                        </div>
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $p->SKU }}</div>
-                            @if($p->item_number)
+                            {{-- @if($p->item_number)
                             <div class="cpb-code">#{{ $p->item_number }}</div>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
             </div>

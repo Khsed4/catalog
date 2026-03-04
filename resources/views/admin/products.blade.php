@@ -18,59 +18,71 @@
                 <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
                         class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
             </div>
-            <table class="table table-striped table-hover table-condensed ">
-                <thead>
-
-                    <tr>
-
-                        <th>Name</th>
-                        <th>SKU</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Image</th>
-                        <th style="text-align: center">Actions</th>
-                    </tr>
-                </thead>
-                @foreach ($products as $product)
-                    <tbody>
-
-
-
+            @php $grouped = $products->groupBy('category_name'); @endphp
+            @foreach ($grouped as $categoryName => $categoryProducts)
+            <div class="category-group" style="margin-bottom: 20px;">
+                <h5 style="background: #e9ecef; padding: 10px 15px; margin: 0; border-radius: 5px 5px 0 0; color: #1B3A5C; font-weight: 600;">
+                    {{ $categoryName }} <span style="font-weight: 400; font-size: 13px; color: #888;">({{ count($categoryProducts) }})</span>
+                </h5>
+                <table class="table table-striped table-hover table-condensed" style="margin-bottom: 0;">
+                    <thead>
                         <tr>
-
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->SKU }}</td>
-                            <td>{{ $product->price }}</td>
-
-
-                            <td>{{ $product->category_name }}</td>
-
-
-                            <td>
-
-                                <img src='{{ url('images/' . $product->image) }}' alt="apple"
-                                    style="width:90px; height:90px">
-                            </td>
-                            <td style="width: 383px">
-                                <div class="btn-group">
-                                    <button value={{ $product->id }}
-                                        class="btn btn-primary editButton btn-sm slide_start_button action_button_class">Edit</button>
-                                    <button value={{ $product->id }}
-                                        class="btn btn-danger deleteButton btn-sm slide_stop_button action_button_class">Delete</button>
-
-                                    <div class="form-check form-switch">
-                                        <input value={{ $product->id }} class="form-check-input" type="checkbox"
-                                            role="switch" id="flexSwitchCheckDefault"
-                                            {{ $product->out_of_stock === 0 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Out Of Stock</label>
-                                    </div>
-                                </div>
-                            </td>
+                            <th style="width: 40px"></th>
+                            <th>Name</th>
+                            <th>SKU</th>
+                            <th>Price</th>
+                            <th>Orig. Price</th>
+                            <th>Set Price</th>
+                            <th>Image</th>
+                            <th style="text-align: center">Actions</th>
                         </tr>
+                    </thead>
+                    <tbody class="sortable-category">
+                        @foreach ($categoryProducts as $product)
+                            <tr data-id="{{ $product->id }}">
+                                <td class="drag-handle"><i class="material-icons">drag_indicator</i></td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->SKU }}</td>
+                                <td>${{ number_format($product->price, 2) }}</td>
+                                <td>
+                                    @if($product->original_price && $product->original_price > $product->price)
+                                        <s style="color: #999;">${{ number_format($product->original_price, 2) }}</s>
+                                    @else
+                                        --
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($product->set_price)
+                                        ${{ number_format($product->set_price, 2) }}
+                                    @else
+                                        --
+                                    @endif
+                                </td>
+                                <td>
+                                    <img src='{{ url('images/' . $product->image) }}' alt="apple"
+                                        style="width:90px; height:90px">
+                                </td>
+                                <td style="width: 383px">
+                                    <div class="btn-group">
+                                        <button value={{ $product->id }}
+                                            class="btn btn-primary editButton btn-sm slide_start_button action_button_class">Edit</button>
+                                        <button value={{ $product->id }}
+                                            class="btn btn-danger deleteButton btn-sm slide_stop_button action_button_class">Delete</button>
 
+                                        <div class="form-check form-switch">
+                                            <input value={{ $product->id }} class="form-check-input" type="checkbox"
+                                                role="switch"
+                                                {{ $product->out_of_stock === 0 ? 'checked' : '' }}>
+                                            <label class="form-check-label">Out Of Stock</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
-                @endforeach
-            </table>
+                </table>
+            </div>
+            @endforeach
             <div class="clearfix">
                 <div class="hint-text" style="padding: 10px 0; color: #888;">Total: <b>{{ count($products) }}</b> products</div>
             </div>
@@ -88,53 +100,93 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-xs-2">
-                            <select class="form-select form-select-sm" name="category_id" required>
-                                <option selected>Choose A Category</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            <label> Category </label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Category <span class="text-danger">*</span></label>
+                                    <select class="form-control form-control-sm" name="category_id" required>
+                                        <option value="" selected>Choose A Category</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Catalogue</label>
+                                    <select class="form-control form-control-sm" name="catalogue_id">
+                                        <option value="" selected>None (No Catalogue)</option>
+                                        @foreach ($catalogues as $catalogue)
+                                            <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-2">
-                            <select class="form-select form-select-sm" name="catalogue_id">
-                                <option value="" selected>None (No Catalogue)</option>
-                                @foreach ($catalogues as $catalogue)
-                                    <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
-                                @endforeach
-                            </select>
-                            <label> Catalogue </label>
-                        </div>
-                        <div class="col-xs-2 ">
-
-                            <input name="name" type="text" class="form-control" required>
-                            <label class="form-lable" for="name">Name</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input name="SKU" type="text" class="form-control" required>
-                            <label class="form-lable" for="SKU">SKU</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input name="Item_Number" type="text" class="form-control">
-                            <label for="Item_Number">Item Number</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input name="price" step="any" type="number" class="form-control" required>
-                            <label class="form-lable" for="price">Price</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input name="quantity" step="any" type="number" class="form-control">
-                            <label class="form-lable" for="price">Quantity</label>
-                        </div>
-
-
                         <div class="form-group">
-                            <label for="mImage">Choose Image</label>
+                            <label>Product Name <span class="text-danger">*</span></label>
+                            <input name="name" type="text" class="form-control" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Price <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input name="price" step="any" type="number" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Original Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input name="original_price" step="any" type="number" class="form-control" placeholder="Before discount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Set Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input name="set_price" step="any" type="number" class="form-control" placeholder="Price per set">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input name="quantity" step="any" type="number" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>SKU <span class="text-danger">*</span></label>
+                                    <input name="SKU" type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Item Number</label>
+                                    <input name="Item_Number" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Image <span class="text-danger">*</span></label>
                             <input type="file" name="mImage" class="form-control" required />
                         </div>
                     </div>
@@ -153,74 +205,103 @@
                 <form action="{{ url('update-product') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="pr_id" id="pr_id">
+                    <input type="hidden" name="pr_id" id="pr_id">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLable">Edit Product</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal"
-                            aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Edit Product</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-xs-2 ">
-                            <input name="pr_name" id="pr_name" type="text" class="form-control" required>
-                            <label class="form-lable" for="name">Name</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Category <span class="text-danger">*</span></label>
+                                    <select name="pr_category_id" class="form-control form-control-sm" id="pr_category_id" required>
+                                        <option value="">Choose A Category</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Catalogue</label>
+                                    <select name="pr_catalogue_id" class="form-control form-control-sm" id="pr_catalogue_id">
+                                        <option value="">None (No Catalogue)</option>
+                                        @foreach ($catalogues as $catalogue)
+                                            <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-2">
-
-                            <input id="pr_SKU" name="pr_SKU" type="text" class="form-control" required>
-                            <label class="form-lable" for="SKU">SKU</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input id="pr_Item_Number" name="pr_Item_Number" type="text" class="form-control">
-                            <label for="Item_Number">Item Number</label>
-                        </div>
-                        <div class="col-xs-2">
-
-                            <input id="pr_price" name="pr_price" step="any" type="number" class="form-control"
-                                required>
-                            <label class="form-lable" for="price">Price</label>
-                        </div>
-
-                        <div class="col-xs-2">
-
-                            <select name="pr_category_id" class="form-select form-select-sm" id="pr_category_id"
-                                required>
-
-                                <option selected>Choose A Category</option>
-
-                                @for ($i = 0; $i < count($categories); $i++)
-                                    <option value="{{ $categories[$i]->id }}">{{ $categories[$i]->name }}</option>
-                                @endfor
-
-
-                            </select>
-                            <label class="form-lable"> Category </label>
-                        </div>
-
-                        <div class="col-xs-2">
-                            <select name="pr_catalogue_id" class="form-select form-select-sm" id="pr_catalogue_id">
-                                <option value="" selected>None (No Catalogue)</option>
-                                @foreach ($catalogues as $catalogue)
-                                    <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
-                                @endforeach
-                            </select>
-                            <label class="form-lable"> Catalogue </label>
-                        </div>
-
                         <div class="form-group">
-                            <label for="mImage">Choose Image</label>
+                            <label>Product Name <span class="text-danger">*</span></label>
+                            <input name="pr_name" id="pr_name" type="text" class="form-control" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Price <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input id="pr_price" name="pr_price" step="any" type="number" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Original Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input id="pr_original_price" name="pr_original_price" step="any" type="number" class="form-control" placeholder="Before discount">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Set Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input id="pr_set_price" name="pr_set_price" step="any" type="number" class="form-control" placeholder="Price per set">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>SKU <span class="text-danger">*</span></label>
+                                    <input id="pr_SKU" name="pr_SKU" type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Item Number</label>
+                                    <input id="pr_Item_Number" name="pr_Item_Number" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
                             <input type="file" name="pr_mImage" id="pr_mImage" class="form-control" />
                         </div>
                     </div>
-
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancel">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <input type="submit" class="btn btn-info" value="Update">
                     </div>
+                </form>
             </div>
-            </form>
         </div>
-    </div>
     </div>
     <!-- Delete Modal HTML -->
     <div id="deleteEmployeeModal" class="modal fade">
@@ -232,7 +313,7 @@
 
                     <div class="modal-header">
                         <h4 class="modal-title">Delete Product</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal"
+                        <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
@@ -241,7 +322,7 @@
                         <p class="text-warning"><small>This action cannot be undone.</small></p>
                     </div>
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-bs-dismiss="modal" value="Cancel">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <input type="submit" class="btn btn-danger" value="Delete">
                     </div>
                 </form>
@@ -268,7 +349,10 @@
                         $('#pr_name').val(response.product.name);
                         $('#pr_SKU').val(response.product.SKU);
                         $('#pr_price').val(response.product.price);
+                        $('#pr_original_price').val(response.product.original_price || '');
+                        $('#pr_set_price').val(response.product.set_price || '');
                         $('#pr_Item_Number').val(response.product.item_number);
+                        $('#pr_category_id').val(response.product.category_id);
                         $('#pr_catalogue_id').val(response.product.catalogue_id || '');
                     }
                 })
@@ -305,6 +389,39 @@
 
 
 
-        })
+        });
+
+        // Drag-and-drop sorting per category
+        document.querySelectorAll('.sortable-category').forEach(function(el) {
+            new Sortable(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function() {
+                    var order = [];
+                    $(el).find('tr').each(function() {
+                        order.push($(this).data('id'));
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/update-product-order',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            order: order
+                        },
+                        success: function() {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Order saved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

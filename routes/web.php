@@ -25,6 +25,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/edit-product/{id}', [ProductController::class, 'editproduct']);
     Route::put('/update-product', [ProductController::class, 'updateProduct']);
     Route::get('/toggle-product/{id}', [ProductController::class, 'toggleProduct']);
+    Route::post('/update-product-order', [ProductController::class, 'updateProductOrder']);
 
     // Category Management Routes
     Route::get('/categories', [CategoryController::class, 'showCategories']);

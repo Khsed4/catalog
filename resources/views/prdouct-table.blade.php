@@ -13,9 +13,23 @@
                     @if(isset($product->category_name))
                     <small class="text-muted mb-2" style="font-size: 12px;">{{ $product->category_name }}</small>
                     @endif
-                    <div class="mt-auto d-flex justify-content-between align-items-center" style="padding-top: 8px; border-top: 1px solid #f0f0f0;">
-                        <span style="font-size: 18px; font-weight: 700; color: #1B3A5C;">${{ number_format($product->price, 2) }}</span>
-                        <span class="badge" style="background: #1B3A5C; color: #C8941A; font-size: 11px; padding: 4px 8px; border-radius: 4px;">{{ $product->SKU }}</span>
+                    <div class="mt-auto" style="padding-top: 8px; border-top: 1px solid #f0f0f0;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            @if($product->original_price && $product->original_price > $product->price)
+                                <span>
+                                    <span style="font-size: 13px; color: #999; text-decoration: line-through;">${{ number_format($product->original_price, 2) }}</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #C8941A;">${{ number_format($product->price, 2) }}</span>
+                                </span>
+                            @else
+                                <span style="font-size: 18px; font-weight: 700; color: #1B3A5C;">${{ number_format($product->price, 2) }}</span>
+                            @endif
+                        </div>
+                        @if($product->set_price)
+                            <div style="font-size: 13px; color: #666; margin-top: 2px;">Set: <strong style="color: #1B3A5C;">${{ number_format($product->set_price, 2) }}</strong></div>
+                        @endif
+                        <div class="d-flex justify-content-end" style="margin-top: 4px;">
+                            <span class="badge" style="background: #1B3A5C; color: #C8941A; font-size: 11px; padding: 4px 8px; border-radius: 4px;">{{ $product->SKU }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

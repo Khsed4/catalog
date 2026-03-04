@@ -231,7 +231,7 @@ table.table td a:hover {
 /* ═══ MODAL STYLES ═══════════════════════════════ */
 
 .modal .modal-dialog {
-    max-width: 480px;
+    max-width: 580px;
 }
 
 .modal .modal-header,
@@ -315,6 +315,22 @@ table.table td a:hover {
     margin-bottom: 16px;
 }
 
+.modal .input-group-text {
+    background: #f8f9fa;
+    border-color: #dce0e4;
+    color: #666;
+    font-weight: 500;
+}
+
+.modal .row {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+.modal .row > [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 /* ═══ CARD ═══════════════════════════════════════ */
 
 .admin-main .card {
@@ -324,4 +340,26 @@ table.table td a:hover {
 }
 .admin-main .card .card-body {
     padding: 28px;
+}
+
+/* ═══ DRAG-AND-DROP SORTING ═════════════════════ */
+
+.drag-handle {
+    cursor: grab;
+    color: #aab2bd;
+    text-align: center;
+    width: 40px;
+    padding: 12px 8px !important;
+}
+.drag-handle:active {
+    cursor: grabbing;
+}
+.drag-handle i {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+.sortable-ghost {
+    background: #e8f0fe !important;
+    opacity: 0.8;
 }

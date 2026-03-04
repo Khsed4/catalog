@@ -25,6 +25,7 @@ class ProductController extends Controller
         $products = Product::where('out_of_stock', false)
             ->join('category', 'products.category_id', '=', 'category.id')
             ->orderBy('category.name', 'ASC')
+            ->orderBy('products.sort_order', 'ASC')
             ->select('products.*', 'category.name as category_name')
             ->get();
 
@@ -38,6 +39,7 @@ class ProductController extends Controller
     {
         $products = Product::join('category', 'products.category_id', '=', 'category.id')
             ->orderBy('category.name', 'ASC')
+            ->orderBy('products.sort_order', 'ASC')
             ->select('products.*', 'category.name as category_name')
             ->get();
 
@@ -86,13 +88,25 @@ class ProductController extends Controller
             $product->category_id = $categroy_id;
             $product->catalogue_id = $request->catalogue_id;
             $product->price = $price;
+            $product->original_price = $request->original_price;
+            $product->set_price = $request->set_price;
             $product->image = $imageName;
             if ($quantity > 0)
                 $product->quantity = $quantity;
 
+            $product->sort_order = (Product::where('category_id', $categroy_id)->max('sort_order') ?? 0) + 1;
             $product->save();
             return back()->with('success', 'The product has been saved');
         }
+    }
+
+    public function updateProductOrder(Request $request)
+    {
+        $order = $request->input('order', []);
+        foreach ($order as $index => $id) {
+            Product::where('id', $id)->update(['sort_order' => $index + 1]);
+        }
+        return response()->json(['status' => 'success']);
     }
     public function deleteProduct($id)
     {
@@ -125,6 +139,8 @@ class ProductController extends Controller
 
         $product->name = $name;
         $product->price = $request->pr_price;
+        $product->original_price = $request->pr_original_price;
+        $product->set_price = $request->pr_set_price;
         $product->SKU = $request->pr_SKU;
         $product->item_number = $request->pr_Item_Number;
         $product->category_id = $request->pr_category_id;
@@ -166,6 +182,7 @@ class ProductController extends Controller
 
         $products = $query->join('category', 'products.category_id', '=', 'category.id')
             ->orderBy('category.name', 'ASC')
+            ->orderBy('products.sort_order', 'ASC')
             ->select('products.*', 'category.name as category_name')
             ->get();
 
@@ -181,10 +198,11 @@ class ProductController extends Controller
         // Fetch company settings for cover page
         $company = CompanySetting::first();
 
-        // Build query - sort by category name
+        // Build query - sort by category name, then sort_order within category
         $query = Product::where('out_of_stock', false)
             ->join('category', 'products.category_id', '=', 'category.id')
             ->orderBy('category.name', 'ASC')
+            ->orderBy('products.sort_order', 'ASC')
             ->select('products.*', 'category.name as category_name');
 
         if ($category_id && $category_id != '0' && $category_id != 'All') {
@@ -205,8 +223,9 @@ class ProductController extends Controller
     public function carpets(Request $request)
     {
         $products = Product::join('category', 'products.category_id', '=', 'category.id')
-            ->orderBy('category.name', 'asc')
-            ->orderBy('products.name', 'asc')
+            ->orderBy('category.name', 'ASC')
+            ->orderBy('products.sort_order', 'ASC')
+            ->orderBy('products.name', 'ASC')
             ->select('products.*')
             ->get();
 

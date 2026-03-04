@@ -13,6 +13,8 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
+        'original_price',
+        'set_price',
         'SKU',
         'item_number',
         'description',
@@ -20,7 +22,8 @@ class Product extends Model
         'catalogue_id',
         'image',
         'out_of_stock',
-        'quantity'
+        'quantity',
+        'sort_order'
     ];
 
     public function category()

@@ -88,7 +88,13 @@
                                     <p>Category</p>
                                 </a>
                                 <h6 class="mb-3">
-                                    <s>$61.99</s><strong class="ms-2 text-danger">{{ $product->price }}</strong>
+                                    @if($product->original_price && $product->original_price > $product->price)
+                                        <s>${{ number_format($product->original_price, 2) }}</s>
+                                    @endif
+                                    <strong class="ms-2 text-danger">${{ number_format($product->price, 2) }}</strong>
+                                    @if($product->set_price)
+                                        <br><small class="text-muted">Set: ${{ number_format($product->set_price, 2) }}</small>
+                                    @endif
                                 </h6>
                             </div>
                         </div>
