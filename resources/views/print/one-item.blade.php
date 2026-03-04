@@ -208,6 +208,16 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+            /* High-quality upscaling for small/low-res images */
+            image-rendering: -webkit-optimize-contrast;
+            /* Safari */
+            image-rendering: high-quality;
+            /* CSS4 standard */
+            /* Subtle sharpening to counteract interpolation blur */
+            filter: contrast(1.05) saturate(1.05);
+            -webkit-backface-visibility: hidden;
+            /* Force GPU rendering */
+            backface-visibility: hidden;
         }
 
         .card-body {
