@@ -206,8 +206,8 @@
         }
 
         .card-img-wrap img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
@@ -443,15 +443,16 @@
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $p->SKU }}</div>
                             {{-- @if($p->item_number)
-                            <div class="cpb-code">#{{ $p->item_number }}</div>
-                            @endif --}}
+                            <div class="cpb-code">#{{ $p->item_number }}
                         </div>
+                        @endif --}}
                     </div>
             </div>
-            @else
-            <div></div>
-            @endif
-            @endfor
+        </div>
+        @else
+        <div></div>
+        @endif
+        @endfor
         </div>
 
         {{-- Footer --}}
