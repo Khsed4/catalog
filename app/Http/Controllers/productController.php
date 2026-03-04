@@ -167,8 +167,8 @@ class ProductController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('products.name', 'like', '%' . $search . '%')
-                  ->orWhere('products.SKU', 'like', '%' . $search . '%')
-                  ->orWhere('products.item_number', 'like', '%' . $search . '%');
+                    ->orWhere('products.SKU', 'like', '%' . $search . '%')
+                    ->orWhere('products.item_number', 'like', '%' . $search . '%');
             });
         }
 
