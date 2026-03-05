@@ -200,7 +200,7 @@
             justify-content: center;
             padding: 28px;
             background: #fafafa;
-            min-height: 0;
+            min-height: 180px;
             overflow: hidden;
         }
 
@@ -208,6 +208,10 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            min-width: 120px;
+            min-height: 120px;
+            background: #f4f4f4;
+            border-radius: 8px;
         }
 
         .card-body {
