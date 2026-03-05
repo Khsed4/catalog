@@ -223,11 +223,7 @@
             line-height: 1.3;
             margin-bottom: 2px;
             white-space: normal;
-<<<<<<< HEAD
             word-break: break-word;
-=======
-            word-wrap: break-word;
->>>>>>> b0ac83400a7a03f5bf8675ac14fb68440dcf4be5
         }
 
         .card-desc {
