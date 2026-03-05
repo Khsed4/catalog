@@ -208,7 +208,7 @@
         .card-img-wrap img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain;
+            object-fit: cover;
         }
 
         .card-body {
@@ -223,7 +223,11 @@
             line-height: 1.3;
             margin-bottom: 2px;
             white-space: normal;
+<<<<<<< HEAD
             word-break: break-word;
+=======
+            word-wrap: break-word;
+>>>>>>> b0ac83400a7a03f5bf8675ac14fb68440dcf4be5
         }
 
         .card-desc {
@@ -435,22 +439,20 @@
                             <span class="cpb-original-price">${{ number_format($p->original_price, 2) }}</span>
                             @endif
                             ${{ number_format($p->price, 2) }}
-                            @if($p->set_price)
-                            <div class="cpb-set-price">Set: ${{ number_format($p->set_price, 2) }}</div>
-                            @endif
                         </div>
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $p->SKU }}</div>
-                            {{-- @if($p->item_number)
-                            <div class="cpb-code">#{{ $p->item_number }}</div>
-                            @endif --}}
+                            @if($p->set_price)
+                            <div class="cpb-code">Set: ${{ number_format($p->set_price, 2) }}</div>
+                            @endif
                         </div>
                     </div>
             </div>
-            @else
-            <div></div>
-            @endif
-            @endfor
+        </div>
+        @else
+        <div></div>
+        @endif
+        @endfor
         </div>
 
         {{-- Footer --}}
