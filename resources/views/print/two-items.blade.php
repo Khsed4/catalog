@@ -199,18 +199,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            height: 200px;
+            padding: 0;
             background: #fafafa;
-            min-height: 180px;
             overflow: hidden;
         }
 
         .card-img-wrap img {
+            height: 100%;
+            width: auto;
             max-width: 100%;
-            max-height: 100%;
             object-fit: contain;
-            min-width: 120px;
-            min-height: 120px;
             background: #f4f4f4;
             border-radius: 8px;
         }
