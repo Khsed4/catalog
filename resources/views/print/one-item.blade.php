@@ -447,9 +447,6 @@
                         </div>
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $product->SKU }}</div>
-                            @if($product->set_price)
-                            <div class="cpb-code">Set: ${{ number_format($product->set_price, 2) }}</div>
-                            @endif
                         </div>
                     </div>
                 </div>
