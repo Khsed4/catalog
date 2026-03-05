@@ -238,6 +238,8 @@
             color: #1B3A5C;
             line-height: 1.3;
             margin-bottom: 4px;
+            white-space: normal;
+            word-wrap: break-word;
         }
 
         .card-desc {
@@ -446,14 +448,11 @@
                             <span class="cpb-original-price">${{ number_format($product->original_price, 2) }}</span>
                             @endif
                             ${{ number_format($product->price, 2) }}
-                            @if($product->set_price)
-                            <div class="cpb-set-price">Set: ${{ number_format($product->set_price, 2) }}</div>
-                            @endif
                         </div>
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $product->SKU }}</div>
-                            @if($product->item_number)
-                            <div class="cpb-code">#{{ $product->item_number }}</div>
+                            @if($product->set_price)
+                            <div class="cpb-code">Set: ${{ number_format($product->set_price, 2) }}</div>
                             @endif
                         </div>
                     </div>
