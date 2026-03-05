@@ -222,9 +222,8 @@
             color: #1B3A5C;
             line-height: 1.3;
             margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            word-break: break-word;
         }
 
         .card-desc {
@@ -442,9 +441,9 @@
                         </div>
                         <div class="cpb-meta">
                             <div class="cpb-sku">SKU {{ $p->SKU }}</div>
-                            {{-- @if($p->item_number)
-                            <div class="cpb-code">#{{ $p->item_number }}</div>
-                            @endif --}}
+                            @if($p->set_price)
+                            <div class="cpb-code">Set: ${{ number_format($p->set_price, 2) }}</div>
+                            @endif
                         </div>
                     </div>
             </div>
