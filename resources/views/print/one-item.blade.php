@@ -228,6 +228,8 @@
             color: #1B3A5C;
             line-height: 1.3;
             margin-bottom: 4px;
+            white-space: normal;
+            word-break: break-word;
         }
 
         .card-desc {

@@ -222,9 +222,8 @@
             color: #1B3A5C;
             line-height: 1.3;
             margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            word-break: break-word;
         }
 
         .card-desc {
