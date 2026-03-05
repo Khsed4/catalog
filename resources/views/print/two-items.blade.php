@@ -444,10 +444,11 @@
                         </div>
                     </div>
             </div>
-            @else
-            <div></div>
-            @endif
-            @endfor
+        </div>
+        @else
+        <div></div>
+        @endif
+        @endfor
         </div>
 
         {{-- Footer --}}
